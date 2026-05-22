@@ -1,0 +1,201 @@
+{{ define "main" }}
+
+<!-- ========== HERO ========== -->
+<header class="hero">
+  <div class="container">
+    <div class="hero-inner">
+      <div class="hero-mascot">
+        <img src="/img/loutre.svg" alt="Loutre" width="160" height="160">
+      </div>
+      <div class="hero-text">
+        <p class="hero-kicker">Hello les humains 👋</p>
+        <h1 class="hero-title">Je suis <span class="accent">Loutre</span>.</h1>
+        <p class="hero-tagline">
+          Médecin de jour, <em>codeuse de nuit</em>. Je bricole des
+          outils qui soignent (parfois littéralement) — sites web, IoT,
+          intégrations qui rendent la vie plus simple.
+        </p>
+        <p class="hero-links">
+          <a href="#projets" class="btn">Mes projets</a>
+          <a href="#contact" class="btn btn-ghost">Me contacter</a>
+        </p>
+      </div>
+    </div>
+  </div>
+</header>
+
+<!-- ========== ABOUT ========== -->
+<section id="about" class="section">
+  <div class="container container-prose">
+    <p class="kicker">À propos</p>
+    <h2>Médecin qui code, parce que pourquoi pas.</h2>
+    <p>
+      Je suis médecin en France, et quand je ne soigne pas, je
+      <strong>code</strong>. Surtout pour mes confrères et consœurs —
+      parce qu'on a besoin d'outils qui marchent et qui ne nous coûtent
+      pas un rein.
+    </p>
+    <p>
+      Mes terrains de jeu : <strong>sites pour soignants</strong>,
+      <strong>home automation</strong> (Home Assistant 4&nbsp;ever),
+      <strong>petits outils Python</strong> qui résolvent des frictions
+      du quotidien. Tout est <a href="https://github.com/ClaraVnk" target="_blank" rel="noopener">open source ici</a>.
+    </p>
+    <p>
+      Je travaille à la <em>cool freelance</em> — pas d'agence, pas de
+      mensualité gonflée, pas de "stratégie digitale globale 360". Juste
+      un site qui marche, qui est joli, et qui coûte ce qu'il coûte
+      vraiment (souvent : pas grand-chose).
+    </p>
+  </div>
+</section>
+
+<!-- ========== PROJETS ========== -->
+<section id="projets" class="section section-alt">
+  <div class="container">
+    <p class="kicker">Mes projets</p>
+    <h2>Des trucs que j'ai construits et dont je suis assez fière.</h2>
+
+    <div class="projects-grid">
+
+      <a href="https://medicalement-geek.cyberloutre.fr" class="project" target="_blank" rel="noopener">
+        <div class="project-tag">Veille médicale · 2026</div>
+        <h3 class="project-title">Médicalement Geek</h3>
+        <p class="project-desc">
+          Refonte complète d'un blog Blogger en site Hugo moderne pour
+          Dr Agibus : 562 billets migrés, recherche full-text,
+          taxonomies par spécialité et pathologie, newsletter intégrée.
+        </p>
+        <p class="project-tech">Hugo · Python · Pagefind · Decap CMS · Infomaniak</p>
+        <span class="project-cta">Voir le site →</span>
+      </a>
+
+      <a href="https://transidenticlic.com" class="project" target="_blank" rel="noopener">
+        <div class="project-tag">Outil clinique · 2024</div>
+        <h3 class="project-title">Transidenticlic</h3>
+        <p class="project-desc">
+          Outil numérique gratuit et indépendant pour aider les
+          soignants dans la prise en charge des patient·es trans :
+          aide-mémoire, protocoles, ressources cliniques co-construites.
+        </p>
+        <p class="project-tech">Hugo · Bootstrap · Infomaniak</p>
+        <span class="project-cta">Voir le site →</span>
+      </a>
+
+      <a href="https://myeline.io" class="project" target="_blank" rel="noopener">
+        <div class="project-tag">Produit SaaS · 2025</div>
+        <h3 class="project-title">Myeline</h3>
+        <p class="project-desc">
+          Votre bibliothèque personnelle, devenue intelligente. Un
+          espace où organiser et redécouvrir ses lectures, avec une
+          touche d'IA pour les retrouvailles sérendipites.
+        </p>
+        <p class="project-tech">Python · IA · OpenStack · Infomaniak</p>
+        <span class="project-cta">Voir le site →</span>
+      </a>
+
+      <a href="https://github.com/ClaraVnk?tab=repositories" class="project" target="_blank" rel="noopener">
+        <div class="project-tag">Open source · ongoing</div>
+        <h3 class="project-title">Plein d'autres trucs</h3>
+        <p class="project-desc">
+          Intégrations Home Assistant, toolbox OpenStack, scripts
+          Python utiles, snippets bash, badges Markdown,
+          terminal customisé… Tout est sur GitHub, en accès libre.
+        </p>
+        <p class="project-tech">Python · Bash · Home Assistant · YAML</p>
+        <span class="project-cta">Voir sur GitHub →</span>
+      </a>
+
+    </div>
+  </div>
+</section>
+
+<!-- ========== STACK ========== -->
+<section id="stack" class="section">
+  <div class="container container-prose">
+    <p class="kicker">Stack & outils</p>
+    <h2>Ce que j'utilise au quotidien.</h2>
+    <ul class="stack-list">
+      <li><strong>Langages</strong> : Python, HTML/CSS, YAML, Bash. JavaScript juste ce qu'il faut.</li>
+      <li><strong>SSG</strong> : Hugo (rapide, sobre, fait le job). Bootstrap pour les prototypes.</li>
+      <li><strong>Hébergement</strong> : <a href="https://www.infomaniak.com/" target="_blank" rel="noopener">Infomaniak</a> (suisse, RGPD, sympa).</li>
+      <li><strong>IoT</strong> : Home Assistant, Raspberry Pi, Nabaztag (oui).</li>
+      <li><strong>Outils</strong> : VSCode, GitHub, Photoshop, Canva.</li>
+      <li><strong>Environnement</strong> : macOS au boulot, Ubuntu sur les serveurs.</li>
+    </ul>
+  </div>
+</section>
+
+<!-- ========== COMPANIONS ========== -->
+<section id="companions" class="section section-alt">
+  <div class="container container-prose">
+    <p class="kicker">Mes compagnons</p>
+    <h2>Sans eux, rien de tout ça.</h2>
+    <ul class="companions">
+      <li>
+        <span class="companion-emoji">🐶</span>
+        <div>
+          <strong>Shiva</strong>, mon Shar Pei.
+          Mascotte officielle de tous mes commits, fait des plis quand
+          il dort sur le clavier.
+        </div>
+      </li>
+      <li>
+        <span class="companion-emoji">🐰</span>
+        <div>
+          <strong>Nabaztag</strong>, le lapin connecté.
+          Annonce mes notifications avec une dignité d'objet de 2005.
+        </div>
+      </li>
+      <li>
+        <span class="companion-emoji">☁️</span>
+        <div>
+          <strong>Infomaniak</strong>, mon hébergeur préféré.
+          Suisse, fiable, RGPD, et joignable par téléphone — révolution.
+        </div>
+      </li>
+      <li>
+        <span class="companion-emoji">🎮</span>
+        <div>
+          <strong>Age of Empires</strong>, <strong>Portal</strong>,
+          <strong>Stardew Valley</strong>. Pour décompresser entre deux
+          consultations et trois branches Git.
+        </div>
+      </li>
+    </ul>
+  </div>
+</section>
+
+<!-- ========== CONTACT ========== -->
+<section id="contact" class="section">
+  <div class="container container-prose">
+    <p class="kicker">Me contacter</p>
+    <h2>Un projet, une question, ou juste envie de dire bonjour ?</h2>
+    <p>
+      Le plus simple, c'est par email. Je réponds sous 1 à 3 jours selon
+      la garde du moment.
+    </p>
+    <p class="contact-links">
+      <a href="mailto:loutre@ikmail.com" class="btn btn-mail">loutre@ikmail.com</a>
+      <a href="https://github.com/ClaraVnk" class="btn btn-ghost" target="_blank" rel="noopener">GitHub</a>
+    </p>
+    <p class="contact-fineprint">
+      <em>Pas de devis-pour-le-devis, pas de "stratégie de croissance
+      omnicanale". Juste un site qui marche et qui te ressemble.</em>
+    </p>
+  </div>
+</section>
+
+<!-- ========== FOOTER ========== -->
+<footer class="site-footer">
+  <div class="container container-prose">
+    <p>
+      🦦 © {{ now.Year }} Loutre · <a href="https://github.com/ClaraVnk/cyberloutre.fr" target="_blank" rel="noopener">Source sur GitHub</a> · Hébergé sur Infomaniak
+    </p>
+    <p class="footer-tagline">
+      <em>« Ne soyez pas la personne dont les gens ont peur d'ouvrir les emails. »</em>
+    </p>
+  </div>
+</footer>
+
+{{ end }}

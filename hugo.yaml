@@ -1,0 +1,15 @@
+baseURL: https://cyberloutre.fr/
+locale: fr-FR
+defaultContentLanguage: fr
+title: Loutre — cyberloutre.fr
+
+params:
+  description: "Médecin de jour, codeuse de nuit. Je fais des outils qui soignent (parfois littéralement)."
+  author: "Loutre"
+  email: "loutre@ikmail.com"
+  github: "https://github.com/ClaraVnk"
+
+markup:
+  goldmark:
+    renderer:
+      unsafe: true
