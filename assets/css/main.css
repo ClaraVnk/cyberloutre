@@ -451,7 +451,6 @@ strong { font-weight: 600; }
 .services-intro {
   font-size: 1.05rem;
   color: var(--ink-soft);
-  max-width: 42rem;
   margin: 0 0 2rem;
   text-wrap: balance;
 }
