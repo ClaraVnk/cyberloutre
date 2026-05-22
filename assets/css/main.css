@@ -393,12 +393,32 @@ strong { font-weight: 600; }
 .site-footer a:hover { color: var(--accent-soft); }
 .site-footer p { margin: 0 0 0.6rem; }
 .footer-tagline {
-  font-size: 0.78rem;
-  color: rgba(255,255,255,0.45);
-  margin-top: 0.5rem;
+  font-size: 0.85rem;
+  color: rgba(255,255,255,0.55);
+  margin-top: 0.75rem;
   font-family: var(--font-serif);
+  font-style: italic;
+  min-height: 2em;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.15rem;
+  text-wrap: balance;
 }
-.footer-tagline em { color: rgba(255,255,255,0.55); }
+.quote-text,
+.quote-author {
+  transition: opacity 0.4s ease;
+  display: inline-block;
+}
+.quote-text { font-style: italic; }
+.quote-author {
+  font-style: normal;
+  font-family: var(--font-sans);
+  font-size: 0.72rem;
+  color: rgba(255,255,255,0.4);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+}
 
 /* ---- Availability badge (dispo) ---- */
 .hero-available {

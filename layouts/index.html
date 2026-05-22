@@ -270,9 +270,39 @@
     <p>
       🦦 © {{ now.Year }} Loutre · <a href="https://github.com/ClaraVnk/cyberloutre.fr" target="_blank" rel="noopener">Source sur GitHub</a> · Hébergé sur Infomaniak
     </p>
-    <p class="footer-tagline">
-      <em>« C'est pas faux. »</em> — Perceval, <em>Kaamelott</em>
+    <p class="footer-tagline" aria-live="polite">
+      <span class="quote-text" id="quote-text" data-index="0"></span>
+      <span class="quote-author" id="quote-author"></span>
     </p>
+    <script>
+    (function () {
+      var quotes = [
+        { q: "« C'est pas faux. »", a: "— Perceval" },
+        { q: "« On en a gros. »", a: "— Perceval" },
+        { q: "« Bon. Très bien. Pas grave. »", a: "— Arthur" },
+        { q: "« C'est plus compliqué que ça. »", a: "— Arthur" },
+        { q: "« Ouais ben moi des fois je ressors et puis j'reviens. »", a: "— Perceval" },
+        { q: "« Faut pas prendre les enfants du bon Dieu pour des canards sauvages. »", a: "— Perceval" }
+      ];
+      var qEl = document.getElementById('quote-text');
+      var aEl = document.getElementById('quote-author');
+      // Démarre sur une citation aléatoire pour pas voir toujours la même au load
+      var i = Math.floor(Math.random() * quotes.length);
+      function show () {
+        qEl.style.opacity = '0';
+        aEl.style.opacity = '0';
+        setTimeout(function () {
+          qEl.textContent = quotes[i].q;
+          aEl.textContent = ' ' + quotes[i].a + ', Kaamelott';
+          qEl.style.opacity = '1';
+          aEl.style.opacity = '1';
+          i = (i + 1) % quotes.length;
+        }, 400);
+      }
+      show();
+      setInterval(show, 6000);
+    })();
+    </script>
   </div>
 </footer>
 
