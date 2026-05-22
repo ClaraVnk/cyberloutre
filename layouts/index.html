@@ -8,6 +8,12 @@
         <img src="/img/loutre-avatar.jpg" alt="Loutre" width="400" height="400">
       </div>
       <div class="hero-text">
+        {{ if site.Params.available }}
+          <p class="hero-available">
+            <span class="availability-dot" aria-hidden="true"></span>
+            <span>{{ site.Params.available_text | default "Disponible pour de nouveaux projets" }}</span>
+          </p>
+        {{ end }}
         <p class="hero-kicker">Hello les humains 👋</p>
         <h1 class="hero-title">Je suis <span class="accent">Loutre</span>.</h1>
         <p class="hero-tagline">
@@ -46,6 +52,83 @@
       mensualité gonflée, pas de "stratégie digitale globale 360". Juste
       un site qui marche, qui est joli, et qui coûte ce qu'il coûte
       vraiment (souvent : pas grand-chose).
+    </p>
+  </div>
+</section>
+
+<!-- ========== SERVICES ========== -->
+<section id="services" class="section">
+  <div class="container">
+    <p class="kicker">Ce que je peux faire pour toi</p>
+    <h2>Des outils sobres, qui marchent, qui ne coûtent pas un rein.</h2>
+    <p class="services-intro">
+      Je code pour les soignants — médecins, paramédicaux, structures
+      associatives. Sites web, outils cliniques, intégrations.
+      <strong>Pas d'agence, pas de devis-pour-le-devis, pas de "stratégie 360"</strong>
+      — juste un truc qui marche.
+    </p>
+
+    <div class="services-grid">
+
+      <article class="service">
+        <p class="service-tag">Le plus demandé</p>
+        <h3 class="service-title">Refonte d'un site existant</h3>
+        <p class="service-desc">
+          Tu en as marre de Blogger / WordPress lent et mal foutu ? Je
+          migre ton contenu vers du moderne (Hugo, statique), avec
+          redirections SEO préservées, recherche full-text, et un CMS
+          d'édition simple. Coût d'hébergement après : ~0€/an.
+        </p>
+        <p class="service-example">
+          Exemple : <a href="https://medicalement-geek.cyberloutre.fr">medicalement-geek.cyberloutre.fr</a>
+        </p>
+      </article>
+
+      <article class="service">
+        <p class="service-tag">Sur mesure</p>
+        <h3 class="service-title">Outil clinique web</h3>
+        <p class="service-desc">
+          Aide-mémoire, calculateur, protocole interactif, base de
+          ressources… Un outil qui te fait gagner du temps en
+          consultation ou en formation. Co-construit, validé par tes
+          confrères, accessible, RGPD-native.
+        </p>
+        <p class="service-example">
+          Exemple : <a href="https://transidenticlic.com">transidenticlic.com</a>
+        </p>
+      </article>
+
+      <article class="service">
+        <p class="service-tag">Intégration</p>
+        <h3 class="service-title">CMS + newsletter pour tes billets</h3>
+        <p class="service-desc">
+          Interface d'édition simple type WordPress sans les soucis de
+          maintenance, et envoi automatique de ta newsletter chaque
+          semaine via un service gratuit (jusqu'à 10k abonnés).
+          Tu publies depuis l'admin, le reste se fait tout seul.
+        </p>
+        <p class="service-example">
+          Stack typique : Decap CMS + Kit + Hugo + GitHub.
+        </p>
+      </article>
+
+      <article class="service">
+        <p class="service-tag">Conseil</p>
+        <h3 class="service-title">Audit / regard extérieur</h3>
+        <p class="service-desc">
+          Tu as déjà un site et tu veux un avis honnête ? Je regarde
+          performance, accessibilité, RGPD, UX, sécurité, SEO. Tu
+          repars avec un rapport actionnable, sans baratin commercial.
+        </p>
+        <p class="service-example">
+          Format : 1h de visio + doc synthèse PDF.
+        </p>
+      </article>
+
+    </div>
+
+    <p class="services-cta">
+      <a href="#contact" class="btn">On en parle ?</a>
     </p>
   </div>
 </section>
@@ -178,6 +261,7 @@
     <p class="contact-links">
       <a href="mailto:clara@cyberloutre.fr" class="btn btn-mail">clara@cyberloutre.fr</a>
       <a href="https://github.com/ClaraVnk" class="btn btn-ghost" target="_blank" rel="noopener">GitHub</a>
+      <a href="{{ site.Params.linkedin }}" class="btn btn-ghost" target="_blank" rel="noopener">LinkedIn</a>
     </p>
     <p class="contact-fineprint">
       <em>Pas de devis-pour-le-devis, pas de "stratégie de croissance

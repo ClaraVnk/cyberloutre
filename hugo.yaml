@@ -8,6 +8,10 @@ params:
   author: "Loutre"
   email: "clara@cyberloutre.fr"
   github: "https://github.com/ClaraVnk"
+  linkedin: "https://fr.linkedin.com/in/clara-vanacker-2b922b366"
+  # Bascule à false (ou supprimer) si tu n'es plus disponible
+  available: true
+  available_text: "Disponible pour de nouveaux projets"
 
 markup:
   goldmark:

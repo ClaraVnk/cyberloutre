@@ -399,3 +399,96 @@ strong { font-weight: 600; }
   font-family: var(--font-serif);
 }
 .footer-tagline em { color: rgba(255,255,255,0.55); }
+
+/* ---- Availability badge (dispo) ---- */
+.hero-available {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.35rem 0.85rem 0.35rem 0.6rem;
+  background: rgba(16, 185, 129, 0.12);
+  border: 1px solid rgba(16, 185, 129, 0.4);
+  border-radius: 999px;
+  color: #047857;
+  font-size: 0.82rem;
+  font-weight: 600;
+  margin: 0 0 1.25rem;
+}
+.availability-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #10b981;
+  box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.6);
+  animation: pulse 2.2s ease-in-out infinite;
+}
+@keyframes pulse {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.6); }
+  50%      { box-shadow: 0 0 0 6px rgba(16, 185, 129, 0); }
+}
+
+/* ---- Services section ---- */
+.services-intro {
+  font-size: 1.05rem;
+  color: var(--ink-soft);
+  max-width: 38rem;
+  margin: 0 0 2rem;
+}
+.services-intro strong { color: var(--accent-strong); }
+.services-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1.25rem;
+  margin-bottom: 2rem;
+}
+.service {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  padding: 1.5rem 1.6rem 1.6rem;
+  background: var(--bg);
+  border: 1px solid var(--rule);
+  border-radius: var(--r);
+  border-left: 4px solid var(--accent);
+  transition: transform 0.15s, box-shadow 0.15s;
+}
+.service:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 24px rgba(13, 27, 47, 0.08);
+}
+.service-tag {
+  display: inline-block;
+  font-size: 0.7rem;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  font-weight: 700;
+  color: var(--warm);
+  margin: 0;
+}
+.service-title {
+  font-size: 1.25rem;
+  margin: 0;
+  letter-spacing: -0.015em;
+}
+.service-desc {
+  margin: 0.4rem 0 0;
+  font-size: 0.95rem;
+  line-height: 1.6;
+  color: var(--ink-soft);
+}
+.service-example {
+  margin: 0.5rem 0 0;
+  font-family: var(--font-mono);
+  font-size: 0.78rem;
+  color: var(--ink-mute);
+}
+.service-example a { color: var(--accent-strong); }
+.services-cta {
+  text-align: center;
+  margin: 2.5rem 0 0;
+}
+
+@media (max-width: 768px) {
+  .services-grid { grid-template-columns: 1fr; }
+  .hero-available { font-size: 0.78rem; }
+}
