@@ -67,7 +67,11 @@ strong { font-weight: 600; }
   margin: 0 auto;
   padding: 0 1.5rem;
 }
-.container-prose { max-width: var(--w-prose); }
+.container-prose {
+  max-width: var(--w-prose);
+  margin-left: auto;
+  margin-right: auto;
+}
 
 .kicker {
   display: inline-block;
