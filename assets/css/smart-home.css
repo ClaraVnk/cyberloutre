@@ -225,6 +225,12 @@
 }
 .sh-section__intro p { color: var(--sh-text-soft); line-height: 1.7; }
 .sh-section__intro strong { color: var(--sh-text); font-weight: 600; }
+.sh-section__intro em,
+.sh-auto__desc em {
+    color: var(--sh-text);
+    font-style: italic;
+    font-weight: 500;
+}
 .sh-section__intro ul { padding-left: 1.25rem; color: var(--sh-text-soft); }
 .sh-section__intro li { margin-bottom: 0.5rem; }
 .sh-section__intro code {
