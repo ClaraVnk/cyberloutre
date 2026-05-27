@@ -290,6 +290,48 @@
         0 12px 24px -8px rgba(0, 0, 0, 0.3);
 }
 
+/* ---- TV mockup (Samsung The Frame en Art Mode) ---- */
+.tv-mockup {
+    width: 100%;
+    max-width: 520px;
+    margin: 0;
+    background: linear-gradient(180deg, #0c0c0e, #050506);
+    border-radius: 6px;
+    padding: 22px 22px 16px;
+    box-shadow:
+        inset 0 0 0 1px rgba(255, 255, 255, 0.04),
+        0 30px 60px -18px rgba(0, 0, 0, 0.7),
+        0 12px 24px -10px rgba(0, 0, 0, 0.5);
+}
+.tv-mockup__screen {
+    aspect-ratio: 16 / 10;
+    background: #000;
+    border-radius: 2px;
+    overflow: hidden;
+    box-shadow: inset 0 0 0 2px rgba(255, 255, 255, 0.03);
+}
+.tv-mockup__screen img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+}
+.tv-mockup__caption {
+    margin: 0.875rem 0 0;
+    text-align: center;
+    color: var(--sh-text-muted);
+    font-size: 0.75rem;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+}
+.tv-mockup__caption em {
+    color: var(--sh-text-soft);
+    font-style: italic;
+    text-transform: none;
+    letter-spacing: 0;
+    font-size: 0.875rem;
+}
+
 /* ---- iOS notification mockup (brief Claude exemple) ---- */
 .sh-brief-section {
     background:
