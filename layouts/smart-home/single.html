@@ -312,6 +312,39 @@
   </div>
 </section>
 
+<!-- ========== QR INVITÉS ========== -->
+<section class="sh-section sh-section--soft">
+  <div class="container">
+    <p class="sh-section__kicker">🪧 Invités</p>
+    <h2 class="sh-section__title">Un QR code, et c'est dedans.</h2>
+    <div class="sh-section__intro">
+      <p>
+        Dans l'entrée, j'ai posé une <strong>plaque plexi</strong> avec trois QR codes.
+        L'invité scanne le premier avec son iPhone, il est sur le Wi-Fi
+        <em>Visiteurs</em>. Il scanne le deuxième, il atterrit sur un dashboard
+        Home Assistant minimal — lumières du salon, musique, clim, volets — et
+        il est <strong>déjà connecté</strong>, sans login à taper.
+      </p>
+      <p>
+        Le réseau Visiteurs est <strong>isolé du LAN principal</strong> (192.168.30.x) :
+        ses appareils ne voient ni les caméras, ni le robot, ni les capteurs.
+        Le dashboard guest n'a accès à aucune automation, aucune donnée intime.
+        Zéro post-it griffonné avec le mot de passe Wi-Fi.
+      </p>
+    </div>
+    <div class="sh-tour__phones sh-tour__phones--single" style="margin-top: 2rem;">
+      {{ partial "iphone-mockup.html" (dict
+        "label" "Page d'accueil pour les invités"
+        "images" (slice
+          (dict "src" "/img/smart-home/welcome-wifi.webp" "alt" "Welcome — étape 1 : QR du Wi-Fi visiteurs")
+          (dict "src" "/img/smart-home/welcome-dashboard.webp" "alt" "Welcome — étape 2 : QR du dashboard maison")
+          (dict "src" "/img/smart-home/welcome-app.webp" "alt" "Welcome — étape 3 : QR optionnel de l'app HA Companion")
+        )
+      ) }}
+    </div>
+  </div>
+</section>
+
 <!-- ========== TV FRAME ========== -->
 <section class="sh-section">
   <div class="container">
@@ -395,7 +428,7 @@
     <h2 class="sh-section__title">Comment tout est branché.</h2>
     <pre class="sh-archi"><code>                   ┌─ iPhone Companion (notif, Assist, widget Scriptable)
                    │
-    Pangolin ──── HAOS 192.168.1.15
+    Pangolin ──── HAOS (LAN privé)
        │             │
        │             ├── Aqara Hub M3 ── (Matter) ── 30+ capteurs Aqara
        │             ├── Hue Bridge ── lights + motion
@@ -409,7 +442,7 @@
        │             ├── Anthropic API ── Claude
        │             └── Pi 7" kiosk entrée (Wi-Fi, SSH key)
        │
-       └─ home.domokit.fr (accès distant)</code></pre>
+       └─ home.&lt;domaine-privé&gt; (accès distant via Pangolin)</code></pre>
   </div>
 </section>
 
