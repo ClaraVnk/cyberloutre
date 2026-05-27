@@ -85,8 +85,9 @@
         <span class="sh-auto__emoji">🌧️</span>
         <h3 class="sh-auto__title">Pluie + fenêtre ouverte = volets fermés</h3>
         <p class="sh-auto__desc">
-          Le pluviomètre Netatmo détecte &gt; 0.1&nbsp;mm/h. Si une fenêtre est
-          restée ouverte, les volets exposés se ferment automatiquement + notif iPhone.
+          Le pluviomètre Netatmo détecte plus de 0,1&nbsp;mm/h. Si une fenêtre
+          est restée ouverte, les volets exposés se ferment tout seuls et une
+          notif part sur l'iPhone.
         </p>
       </article>
 
@@ -103,41 +104,47 @@
 
       <article class="sh-auto">
         <span class="sh-auto__emoji">🤖</span>
-        <h3 class="sh-auto__title">Mercredi/Samedi/Dimanche : aspirateur autonome</h3>
+        <h3 class="sh-auto__title">Aspirateur autonome les mercredis, samedis et dimanches</h3>
         <p class="sh-auto__desc">
-          Si tout le monde est absent &gt; 5&nbsp;min, le Roborock S8 démarre.
-          Si quelqu'un rentre, retour dock immédiat. La machine mémorise la zone
-          restante et reprend la prochaine fois.
+          Quand tout le monde est absent depuis plus de 5&nbsp;minutes, le
+          Roborock&nbsp;S8 se lance. Si quelqu'un rentre, il retourne se
+          poser sur sa station immédiatement, mémorise la zone qu'il n'a
+          pas finie, et reprend là où il en était à la session suivante.
         </p>
       </article>
 
       <article class="sh-auto">
         <span class="sh-auto__emoji">🌙</span>
-        <h3 class="sh-auto__title">Brief soir 22h via Claude AI</h3>
+        <h3 class="sh-auto__title">Brief du soir à 22h, par Claude AI</h3>
         <p class="sh-auto__desc">
-          Snapshot de la journée (conso, T° par pièce, présence, anomalies) envoyé
-          à Claude Haiku 4.5 qui rédige un brief naturel sur les 2 iPhones. Pas un
-          dump de chiffres : un point de situation chaleureux.
+          Tous les soirs, un instantané de la journée (consommation
+          électrique, températures par pièce, présence, anomalies éventuelles)
+          est envoyé à Claude Haiku&nbsp;4.5, qui nous rédige un point de
+          situation naturel sur les deux iPhones. Pas un dump de chiffres :
+          un mot chaleureux qui résume la journée.
         </p>
       </article>
 
       <article class="sh-auto">
         <span class="sh-auto__emoji">🖨️</span>
-        <h3 class="sh-auto__title">Détection spaghetti Prusa (Claude vision)</h3>
+        <h3 class="sh-auto__title">Détection « spaghetti » sur la Prusa, par Claude vision</h3>
         <p class="sh-auto__desc">
-          Pendant une impression 3D, toutes les 10&nbsp;min, snapshot caméra envoyé
-          à Claude qui analyse visuellement. Si <code>STATUS=fail</code> détecté :
-          notif iPhone avec boutons <em>Pause</em> / <em>Annuler</em> actionnables.
+          Pendant une impression 3D, une photo de la caméra Buddy Cam est
+          envoyée toutes les 10&nbsp;minutes à Claude, qui l'analyse
+          visuellement. S'il détecte un échec d'impression (le fameux
+          « spaghetti » de filament emmêlé), une notif iPhone arrive avec
+          deux boutons : <em>Pause</em> ou <em>Annuler</em>.
         </p>
       </article>
 
       <article class="sh-auto">
         <span class="sh-auto__emoji">🚨</span>
-        <h3 class="sh-auto__title">Four en marche + personne home</h3>
+        <h3 class="sh-auto__title">Four en marche alors qu'on est sortis</h3>
         <p class="sh-auto__desc">
-          Notif <code>interruption-level: critical</code> (passe au-dessus de tous
-          les focus iOS) avec bouton « 🛑 Arrêter à distance » qui déclenche
-          <code>button.four_stop</code> via LG ThinQ.
+          Notification de niveau <code>critical</code> (qui passe au-dessus
+          de tous les focus iOS) avec un bouton « 🛑 Arrêter à distance ».
+          Un tap déclenche <code>button.four_stop</code> via LG ThinQ —
+          on peut éteindre le four même quand on est déjà dans la voiture.
         </p>
       </article>
 
@@ -439,11 +446,11 @@
        │             ├── Aqara Hub M3 ── (Matter) ── 30+ capteurs Aqara
        │             ├── Hue Bridge ── lights + motion
        │             ├── UniFi Console ── G4 Instant (motion + person_detected)
-       │             ├── Netatmo ── chauffage + T°/HR/CO2 + pluviomètre
+       │             ├── Netatmo ── chauffage + temp./humidité/CO2 + pluviomètre
        │             ├── Daikin ── clim salon
        │             ├── Tesla ── charge, climate, location
        │             ├── Roborock S8 Pro Ultra ── map + zones
-       │             ├── LG ThinQ ── LV/LL/SL/Four
+       │             ├── LG ThinQ ── lave-vaisselle, lave-linge, sèche-linge, four
        │             ├── Samsung Frame ── TV (Art Mode)
        │             ├── Anthropic API ── Claude
        │             └── Pi 7" kiosk entrée (Wi-Fi, SSH key)
@@ -514,7 +521,7 @@
       <div class="sh-number"><span class="sh-number__value">12</span><p class="sh-number__label">scripts personnalisés</p></div>
       <div class="sh-number"><span class="sh-number__value">30+</span><p class="sh-number__label">capteurs Aqara appairés en Matter</p></div>
       <div class="sh-number"><span class="sh-number__value">4</span><p class="sh-number__label">caméras UniFi avec AI person detection</p></div>
-      <div class="sh-number"><span class="sh-number__value">6</span><p class="sh-number__label">pièces avec capteurs T° / HR / CO2 individuels</p></div>
+      <div class="sh-number"><span class="sh-number__value">6</span><p class="sh-number__label">pièces avec capteurs de température, humidité et CO2 individuels</p></div>
       <div class="sh-number"><span class="sh-number__value">~30¢</span><p class="sh-number__label">par mois pour le brief Claude AI</p></div>
     </div>
   </div>
