@@ -700,6 +700,13 @@
     gap: 1rem;
     margin: 1rem 0 0;
 }
+/* Compact bento — 2 colonnes (utilisé quand le bento est dans une demi-largeur) */
+.sh-numbers--compact {
+    grid-template-columns: repeat(2, 1fr);
+}
+@media (max-width: 900px) {
+    .sh-numbers--compact { grid-template-columns: repeat(2, 1fr); }
+}
 .sh-number {
     background: var(--sh-bg-soft);
     border: 1px solid var(--sh-border);
