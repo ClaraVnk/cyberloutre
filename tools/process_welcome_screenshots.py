@@ -26,9 +26,9 @@ DST_DIR = Path(__file__).parent.parent / "static" / "img" / "smart-home"
 # Welcome page screenshots (visitor onboarding) — Page_invite*.jpg are in
 # /Users/claravanacker/Projects/ at the moment.
 WELCOME_MAPPING = [
-    (Path("/Users/claravanacker/Projects/Page_invite1.jpg"), "welcome-wifi.webp"),
-    (Path("/Users/claravanacker/Projects/Page_invite2.jpg"), "welcome-dashboard.webp"),
-    (Path("/Users/claravanacker/Projects/Page_invite3.jpg"), "welcome-app.webp"),
+    (Path("/Users/claravanacker/Projects/home-assistant/QR_invite1.jpg"), "welcome-wifi.webp"),
+    (Path("/Users/claravanacker/Projects/home-assistant/QR_invite2.jpg"), "welcome-dashboard.webp"),
+    (Path("/Users/claravanacker/Projects/home-assistant/QR_invite3.jpg"), "welcome-app.webp"),
 ]
 
 # Tesla-4 contains a map showing Loutre's house in Saint-Julien-en-Genevois.
@@ -350,7 +350,9 @@ def main():
         for m in missing:
             print(f"  - {m}")
 
-    blur_tesla_map()
+    # Tesla map blur disabled — Loutre fournit désormais tesla-4 avec la
+    # carte déjà masquée à la source. Décommente pour réactiver.
+    # blur_tesla_map()
 
 
 if __name__ == "__main__":
