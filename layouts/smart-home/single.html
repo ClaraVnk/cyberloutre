@@ -27,15 +27,17 @@
 
 <!-- ========== SHOWCASE PHONE ========== -->
 <section class="sh-section">
-  <div class="container">
-    <p class="sh-section__kicker">🦦 Aperçu</p>
-    <h2 class="sh-section__title">L'app, en vrai.</h2>
-    <p class="sh-section__lede">
-      Six écrans qui résument la vie de la maison : météo et état général,
-      pièces, énergie, présence, alertes. Scroll vertical dans l'iPhone
-      ci-dessous, comme si tu tenais le mien.
-    </p>
-    <div class="sh-tour__phones sh-tour__phones--single">
+  <div class="container sh-split">
+    <div class="sh-split__text">
+      <p class="sh-section__kicker">🦦 Aperçu</p>
+      <h2 class="sh-section__title">L'app, en vrai.</h2>
+      <p class="sh-section__lede">
+        Six écrans qui résument la vie de la maison : météo et état général,
+        pièces, énergie, présence, alertes. Scroll vertical dans l'iPhone
+        ci-contre, comme si tu tenais le mien.
+      </p>
+    </div>
+    <div class="sh-split__visual">
       {{ partial "iphone-mockup.html" (dict
         "modifier" "showcase"
         "label" "Dashboard principal — 6 écrans"
@@ -312,6 +314,32 @@
   </div>
 </section>
 
+<!-- ========== INTERPHONE FARFISA ========== -->
+<section class="sh-section">
+  <div class="container">
+    <p class="sh-section__kicker">🔔 Interphone</p>
+    <h2 class="sh-section__title">Le vieux Farfisa, rendu intelligent.</h2>
+    <div class="sh-section__intro">
+      <p>
+        L'interphone d'origine est un <strong>Farfisa analogique</strong> :
+        pas de port réseau, pas d'API, rien. Plutôt que de le jeter (il marche
+        parfaitement depuis quinze ans), je l'ai augmenté avec deux bricoles
+        à 15&nbsp;€ pièce :
+      </p>
+      <ul>
+        <li>Un <strong>capteur de vibration Aqara Zigbee</strong> collé sur le combiné — détecte le tremblement de la sonnerie</li>
+        <li>Un <strong>Sonoff RE5V1C</strong> (relai dry-contact 5&nbsp;V) câblé en parallèle du bouton « ouvrir la porte »</li>
+      </ul>
+      <p>
+        Quand quelqu'un sonne, je reçois une <strong>notif iPhone actionnable</strong>
+        avec un aperçu de la caméra entrée immeuble et deux boutons : « 🚪 Ouvrir »
+        (qui pulse le relais 500&nbsp;ms) ou « Ignorer ». J'ouvre la porte au livreur
+        depuis le canapé, sans bouger, sans avoir remplacé un interphone qui marche.
+      </p>
+    </div>
+  </div>
+</section>
+
 <!-- ========== QR INVITÉS ========== -->
 <section class="sh-section sh-section--soft">
   <div class="container">
@@ -326,9 +354,9 @@
         il est <strong>déjà connecté</strong>, sans login à taper.
       </p>
       <p>
-        Le réseau Visiteurs est <strong>isolé du LAN principal</strong> (192.168.30.x) :
-        ses appareils ne voient ni les caméras, ni le robot, ni les capteurs.
-        Le dashboard guest n'a accès à aucune automation, aucune donnée intime.
+        Le réseau Visiteurs est <strong>isolé du LAN principal</strong> : ses
+        appareils ne voient ni les caméras, ni le robot, ni les capteurs. Le
+        dashboard guest n'a accès à aucune automation, aucune donnée intime.
         Zéro post-it griffonné avec le mot de passe Wi-Fi.
       </p>
     </div>
@@ -446,8 +474,38 @@
   </div>
 </section>
 
-<!-- ========== EN CHIFFRES ========== -->
+<!-- ========== VIVANT À LA MAISON ========== -->
 <section class="sh-section sh-section--soft">
+  <div class="container">
+    <p class="sh-section__kicker">🌿 Vivant</p>
+    <h2 class="sh-section__title">Les capteurs ne sont pas que pour la techno.</h2>
+    <div class="sh-section__intro">
+      <p>
+        Une maison, c'est aussi des plantes et un chien. Eux aussi méritent
+        un peu de la même attention silencieuse.
+      </p>
+      <h3 class="sh-subhead">🪴 Plantes connectées</h3>
+      <p>
+        Le Dragonnier de Madagascar et le Ficus ont chacun un capteur multi —
+        humidité du substrat, conductivité, luminosité, température. Quand
+        l'humidité tombe sous le seuil viable, notif iPhone avec un mot doux
+        pour la plante concernée. Petite vigilance bienveillante sur le vivant,
+        c'est aussi ça, une maison qui pense.
+      </p>
+      <h3 class="sh-subhead">🐕 Shiva nous rappelle son existence</h3>
+      <p>
+        Si la porte d'entrée n'a pas été ouverte sur une plage de plus de
+        <strong>8&nbsp;heures entre 9h et 22h</strong> (jamais la nuit — on ne
+        réveille pas un ménage qui dort), Shiva nous envoie gentiment une
+        notif. Anti-spam intégré : une sortie même brève suffit à réinitialiser
+        le compteur.
+      </p>
+    </div>
+  </div>
+</section>
+
+<!-- ========== EN CHIFFRES ========== -->
+<section class="sh-section">
   <div class="container">
     <p class="sh-section__kicker">📊 En chiffres</p>
     <h2 class="sh-section__title">La maison en quelques nombres.</h2>
@@ -458,6 +516,27 @@
       <div class="sh-number"><span class="sh-number__value">4</span><p class="sh-number__label">caméras UniFi avec AI person detection</p></div>
       <div class="sh-number"><span class="sh-number__value">6</span><p class="sh-number__label">pièces avec capteurs T° / HR / CO2 individuels</p></div>
       <div class="sh-number"><span class="sh-number__value">~30¢</span><p class="sh-number__label">par mois pour le brief Claude AI</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- ========== THEME GLASS ========== -->
+<section class="sh-section sh-section--soft">
+  <div class="container">
+    <p class="sh-section__kicker">🪟 Theme</p>
+    <h2 class="sh-section__title">Le Liquid Glass d'Apple, sur Home Assistant.</h2>
+    <div class="sh-section__intro">
+      <p>
+        Toutes les vues utilisent un <strong>thème custom inspiré du Liquid
+        Glass d'Apple</strong> : <code>backdrop-filter: blur(32px)</code>,
+        fonds <code>rgba</code> translucides sur gradients radiaux violet et bleu,
+        cartes HA avec bordures et reflets subtils.
+      </p>
+      <p>
+        C'est cohérent avec un foyer où on a deux iPhones, un MacBook et un iPad,
+        et un goût pour les interfaces qui respirent. L'effet est difficile à
+        rendre par écrit — le tour des dashboards plus haut le montre partout.
+      </p>
     </div>
   </div>
 </section>
@@ -479,13 +558,12 @@
 <!-- ========== CTA ========== -->
 <section class="sh-cta">
   <div class="container">
-    <h2>Te tenter ?</h2>
+    <h2>Tu veux la même chez toi ?</h2>
     <p>
       Si tu veux discuter d'une install Home Assistant ou d'un wall panel
       tactile pour ton foyer (ou ton cabinet), écris-moi.
     </p>
     <a href="/#contact" class="sh-cta__btn">Me contacter →</a>
-    <p class="sh-cta__sign">🦦 cyberloutre.fr · code + soin</p>
   </div>
 </section>
 

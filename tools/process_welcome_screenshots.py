@@ -139,15 +139,36 @@ def detect_qr_region(img, debug=False):
         return None
     y_start, y_end = max(candidates, key=lambda r: r[1] - r[0])
 
-    # X-extent : take the union of dark spreads from QR rows
-    x_min, x_max = w, 0
+    # X-extent : take the most common x_min / x_max across QR rows (mode-like),
+    # ignoring outliers from card borders / shadows near the image edges.
+    # We compute the MEDIAN x_min and MEDIAN x_max from the QR rows only.
+    qr_row_xs = []
     for y in range(y_start, y_end):
         pct, xl, xr, spread = row_info[y]
         if DARK_PCT_MIN <= pct <= DARK_PCT_MAX and spread >= MIN_X_SPREAD:
-            if xl < x_min:
-                x_min = xl
-            if xr > x_max:
-                x_max = xr
+            qr_row_xs.append((xl, xr))
+
+    if not qr_row_xs:
+        return None
+
+    # Sort and take median
+    x_mins = sorted(xl for (xl, _) in qr_row_xs)
+    x_maxs = sorted(xr for (_, xr) in qr_row_xs)
+    x_min = x_mins[len(x_mins) // 2]
+    x_max = x_maxs[len(x_maxs) // 2]
+
+    # Enforce QR-shape constraint : QRs are square, height ≈ width.
+    # If detected width is significantly larger than height (= shadow / card
+    # noise on the side), clamp to height and re-center on the image's
+    # horizontal midpoint.
+    height = y_end - y_start
+    width = x_max - x_min
+    if width > height * 1.15:
+        center_x = w // 2
+        half = height // 2
+        x_min = center_x - half
+        x_max = center_x + half
+
     pad = 30
     return (max(0, x_min - pad), max(0, y_start - pad),
             min(w, x_max + pad), min(h, y_end + pad))
