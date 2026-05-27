@@ -297,6 +297,77 @@
         0 12px 24px -8px rgba(0, 0, 0, 0.3);
 }
 
+/* ---- iOS widget mockup (Scriptable custom maison) ---- */
+.ios-widget {
+    width: 100%;
+    max-width: 360px;
+    aspect-ratio: 1 / 1;
+    background: linear-gradient(180deg, #1a1d2a, #10131c);
+    border-radius: 26px;
+    padding: 20px 22px 16px;
+    box-shadow:
+        inset 0 0 0 1px rgba(255, 255, 255, 0.05),
+        0 30px 60px -18px rgba(0, 0, 0, 0.65),
+        0 14px 28px -10px rgba(0, 0, 0, 0.45);
+    color: #fff;
+    font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Helvetica Neue", sans-serif;
+    display: flex;
+    flex-direction: column;
+}
+.ios-widget__header {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    margin-bottom: 8px;
+}
+.ios-widget__title {
+    font-size: 16px;
+    color: #fff;
+}
+.ios-widget__title strong { font-weight: 700; }
+.ios-widget__time {
+    color: rgba(255, 255, 255, 0.55);
+    font-size: 12.5px;
+}
+.ios-widget__lines {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    flex: 1;
+}
+.ios-widget__line {
+    margin: 0;
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    font-weight: 600;
+    font-size: 12.5px;
+    line-height: 1.3;
+}
+.ios-widget__emoji {
+    flex-shrink: 0;
+    font-size: 13px;
+}
+.ios-widget__grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 4px 12px;
+}
+.ios-widget__footer {
+    margin: 8px 0 0;
+    text-align: right;
+    color: rgba(255, 255, 255, 0.4);
+    font-size: 10px;
+    letter-spacing: 0.04em;
+}
+
+.iw-red    { color: #ff7a7a; }
+.iw-green  { color: #5cd8a3; }
+.iw-yellow { color: #ffd24d; }
+.iw-blue   { color: #6db7ff; }
+.iw-purple { color: #c490ff; }
+.iw-white  { color: #fff; }
+
 /* ---- TV mockup (Samsung The Frame en Art Mode) ---- */
 .tv-mockup {
     width: 100%;
