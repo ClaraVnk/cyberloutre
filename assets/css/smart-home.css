@@ -108,6 +108,20 @@
     font-style: italic;
     text-align: left;
 }
+.sh-hero__quote p {
+    margin: 0;
+    color: var(--sh-text);
+}
+.sh-hero__quote-cite {
+    display: block;
+    margin-top: 0.625rem;
+    color: var(--sh-text-muted);
+    font-size: 0.8125rem;
+    font-style: normal;
+    font-family: var(--sh-mono);
+    letter-spacing: 0.02em;
+    text-align: right;
+}
 
 /* ---- iPhone mockup ----
    Aspect-ratio recalibré pour matcher les captures croppées (sans status
