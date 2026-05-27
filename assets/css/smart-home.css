@@ -101,11 +101,15 @@
     text-align: left;
 }
 
-/* ---- iPhone mockup ---- */
+/* ---- iPhone mockup ----
+   Aspect-ratio recalibré pour matcher les captures croppées (sans status
+   bar iOS ni header HA blanc). Hauteur moyenne après crop ≈ 2246px sur
+   1206 large → ratio ≈ 0.537. Avec padding 10px tout autour, ratio phone
+   adapté pour que les images remplissent l'écran sans bande noire. */
 .iphone-mockup {
     --iphone-w: 280px;
     width: var(--iphone-w);
-    aspect-ratio: 280 / 580;
+    aspect-ratio: 280 / 510;
     margin: 0 auto;
     position: relative;
     background: linear-gradient(145deg, #2a2d36, #14161c);
@@ -167,7 +171,7 @@
 /* Wider mockup for the hero showcase */
 .iphone-mockup--showcase {
     --iphone-w: 320px;
-    aspect-ratio: 320 / 680;
+    aspect-ratio: 320 / 583;
 }
 
 /* ---- Section ---- */
