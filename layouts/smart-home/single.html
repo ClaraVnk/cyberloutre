@@ -1,0 +1,422 @@
+{{ define "main" }}
+
+<header class="sh-nav">
+  <div class="container sh-nav__inner">
+    <a href="/" class="sh-nav__back">← cyberloutre.fr</a>
+    <a href="/" class="sh-nav__brand">🦦 Loutre</a>
+  </div>
+</header>
+
+<!-- ========== HERO ========== -->
+<section class="sh-hero">
+  <div class="container">
+    <p class="sh-hero__kicker">Smart home · Home Assistant</p>
+    <h1 class="sh-hero__title">Ma maison qui pense.</h1>
+    <p class="sh-hero__tagline">
+      Architecture Home Assistant pour foyer 2 adultes + bébé + chien + chat,
+      appart 3<sup>e</sup> étage. Pilotage Matter + Zigbee, cerveau Claude AI,
+      brief vocal quotidien, caméras UniFi, suivi conso, et un Pi tactile dans l'entrée.
+    </p>
+    <blockquote class="sh-hero__quote">
+      « C'est bien beau de faire un joli dashboard sur ordinateur. Mais 99 % du
+      temps, on pilote sa smart home depuis son smartphone. Alors tout ce que
+      tu vois ici, c'est ce que je vois moi, depuis l'iPhone. »
+    </blockquote>
+  </div>
+</section>
+
+<!-- ========== SHOWCASE PHONE ========== -->
+<section class="sh-section">
+  <div class="container">
+    <p class="sh-section__kicker">🦦 Aperçu</p>
+    <h2 class="sh-section__title">L'app, en vrai.</h2>
+    <p class="sh-section__lede">
+      Six écrans qui résument la vie de la maison : météo et état général,
+      pièces, énergie, présence, alertes. Scroll vertical dans l'iPhone
+      ci-dessous, comme si tu tenais le mien.
+    </p>
+    <div class="sh-tour__phones sh-tour__phones--single">
+      {{ partial "iphone-mockup.html" (dict
+        "modifier" "showcase"
+        "label" "Dashboard principal — 6 écrans"
+        "images" (slice
+          (dict "src" "/img/smart-home/showcase-1.webp" "alt" "Dashboard principal vue d'ensemble")
+          (dict "src" "/img/smart-home/showcase-2.webp" "alt" "Dashboard principal, suite")
+          (dict "src" "/img/smart-home/showcase-3.webp" "alt" "Dashboard principal, écran 3")
+          (dict "src" "/img/smart-home/showcase-4.webp" "alt" "Dashboard principal, écran 4")
+          (dict "src" "/img/smart-home/showcase-5.webp" "alt" "Dashboard principal, écran 5")
+          (dict "src" "/img/smart-home/showcase-6.webp" "alt" "Dashboard principal, écran 6")
+        )
+      ) }}
+    </div>
+  </div>
+</section>
+
+<!-- ========== LE PRINCIPE ========== -->
+<section class="sh-section sh-section--soft">
+  <div class="container">
+    <p class="sh-section__kicker">🧠 Principe</p>
+    <h2 class="sh-section__title">« Passive smart home ».</h2>
+    <div class="sh-section__intro">
+      <p>
+        Pas de <em>« Hey Siri, allume la lumière »</em>. La maison observe et agit :
+      </p>
+      <ul>
+        <li>La SDB s'allume quand on entre, reste allumée tant qu'on prend une douche, s'éteint quand on en sort</li>
+        <li>Les volets se ferment quand il pleut <strong>+</strong> qu'une fenêtre est ouverte</li>
+        <li>Le four notifie uniquement les iPhones des personnes présentes</li>
+        <li>Claude AI rédige chaque soir un brief naturel de la journée</li>
+      </ul>
+      <p>C'est silencieux, contextuel, et ça libère du temps mental.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ========== 6 AUTOMATISATIONS ========== -->
+<section class="sh-section">
+  <div class="container">
+    <p class="sh-section__kicker">⚙️ Automatisations</p>
+    <h2 class="sh-section__title">6 trucs qui me changent la vie.</h2>
+    <div class="sh-autos">
+
+      <article class="sh-auto">
+        <span class="sh-auto__emoji">🌧️</span>
+        <h3 class="sh-auto__title">Pluie + fenêtre ouverte = volets fermés</h3>
+        <p class="sh-auto__desc">
+          Le pluviomètre Netatmo détecte &gt; 0.1&nbsp;mm/h. Si une fenêtre est
+          restée ouverte, les volets exposés se ferment automatiquement + notif iPhone.
+        </p>
+      </article>
+
+      <article class="sh-auto">
+        <span class="sh-auto__emoji">🚿</span>
+        <h3 class="sh-auto__title">Douche en cours = lumière protégée</h3>
+        <p class="sh-auto__desc">
+          Couplage capteur de mouvement Aqara P2 + humidité SDB. Tant que
+          <code>HR &gt; 55%</code> et que quelqu'un est dans la pièce, la lumière
+          ne s'éteint pas, même sur un appui accidentel ou un timer firmware fantôme.
+        </p>
+      </article>
+
+      <article class="sh-auto">
+        <span class="sh-auto__emoji">🤖</span>
+        <h3 class="sh-auto__title">Mercredi/Samedi/Dimanche : aspirateur autonome</h3>
+        <p class="sh-auto__desc">
+          Si tout le monde est absent &gt; 5&nbsp;min, le Roborock S8 démarre.
+          Si quelqu'un rentre, retour dock immédiat. La machine mémorise la zone
+          restante et reprend la prochaine fois.
+        </p>
+      </article>
+
+      <article class="sh-auto">
+        <span class="sh-auto__emoji">🌙</span>
+        <h3 class="sh-auto__title">Brief soir 22h via Claude AI</h3>
+        <p class="sh-auto__desc">
+          Snapshot de la journée (conso, T° par pièce, présence, anomalies) envoyé
+          à Claude Haiku 4.5 qui rédige un brief naturel sur les 2 iPhones. Pas un
+          dump de chiffres : un point de situation chaleureux.
+        </p>
+      </article>
+
+      <article class="sh-auto">
+        <span class="sh-auto__emoji">🖨️</span>
+        <h3 class="sh-auto__title">Détection spaghetti Prusa (Claude vision)</h3>
+        <p class="sh-auto__desc">
+          Pendant une impression 3D, toutes les 10&nbsp;min, snapshot caméra envoyé
+          à Claude qui analyse visuellement. Si <code>STATUS=fail</code> détecté :
+          notif iPhone avec boutons <em>Pause</em> / <em>Annuler</em> actionnables.
+        </p>
+      </article>
+
+      <article class="sh-auto">
+        <span class="sh-auto__emoji">🚨</span>
+        <h3 class="sh-auto__title">Four en marche + personne home</h3>
+        <p class="sh-auto__desc">
+          Notif <code>interruption-level: critical</code> (passe au-dessus de tous
+          les focus iOS) avec bouton « 🛑 Arrêter à distance » qui déclenche
+          <code>button.four_stop</code> via Samsung Cloud.
+        </p>
+      </article>
+
+    </div>
+  </div>
+</section>
+
+<!-- ========== TOUR DES DASHBOARDS ========== -->
+<section class="sh-section sh-section--soft">
+  <div class="container">
+    <p class="sh-section__kicker">📱 Tour</p>
+    <h2 class="sh-section__title">Les dashboards, en détail.</h2>
+    <p class="sh-section__lede">
+      Chaque iPhone ci-dessous est un dashboard thématique de la vraie app HA Companion.
+      Scroll <strong>à l'intérieur</strong> du téléphone pour passer d'un écran au suivant.
+    </p>
+
+    <div class="sh-tour">
+
+      <div class="sh-tour__group">
+        <div class="sh-tour__head">
+          <h3>⚡ Énergie &amp; Tempo RTE</h3>
+          <p>
+            Conso live Lixee Linky, flux énergie temps réel, anticipation des jours
+            Tempo (rouge = on chauffe pas la maison, on chauffe le bébé).
+          </p>
+        </div>
+        <div class="sh-tour__phones">
+          {{ partial "iphone-mockup.html" (dict "label" "Vue énergie générale" "images" (slice
+            (dict "src" "/img/smart-home/energie-1.webp" "alt" "Vue énergie — conso instantanée")
+            (dict "src" "/img/smart-home/energie-2.webp" "alt" "Vue énergie — détail tarification")
+            (dict "src" "/img/smart-home/energie-3.webp" "alt" "Vue énergie — historique")
+          )) }}
+          {{ partial "iphone-mockup.html" (dict "label" "Graphes énergie" "images" (slice
+            (dict "src" "/img/smart-home/energie-graph-1.webp" "alt" "Graphe énergie journalier")
+            (dict "src" "/img/smart-home/energie-graph-2.webp" "alt" "Graphe énergie hebdomadaire")
+          )) }}
+          {{ partial "iphone-mockup.html" (dict "label" "Calendrier Tempo" "images" (slice
+            (dict "src" "/img/smart-home/tempo-1.webp" "alt" "Tempo — couleur du jour")
+            (dict "src" "/img/smart-home/tempo-2.webp" "alt" "Tempo — couleur du lendemain")
+          )) }}
+        </div>
+      </div>
+
+      <div class="sh-tour__group">
+        <div class="sh-tour__head">
+          <h3>🚗 Tesla « Josette »</h3>
+          <p>
+            État de charge, climate à distance, location live, et les covers
+            (coffre, trappe de charge…). Plus besoin de l'app Tesla.
+          </p>
+        </div>
+        <div class="sh-tour__phones">
+          {{ partial "iphone-mockup.html" (dict "label" "Dashboard Tesla" "images" (slice
+            (dict "src" "/img/smart-home/tesla-1.webp" "alt" "Tesla — vue principale")
+            (dict "src" "/img/smart-home/tesla-2.webp" "alt" "Tesla — détail charge")
+            (dict "src" "/img/smart-home/tesla-3.webp" "alt" "Tesla — climate")
+            (dict "src" "/img/smart-home/tesla-4.webp" "alt" "Tesla — location et covers")
+          )) }}
+        </div>
+      </div>
+
+      <div class="sh-tour__group">
+        <div class="sh-tour__head">
+          <h3>🤖 Roborock S8 Pro Ultra</h3>
+          <p>
+            Map interactive avec 7 pièces cartographiées, pilotable par pièce
+            (Cuisine, Salon, Chambre Raphaël…). Scénario « Passage rapide invités » :
+            salon+cuisine, fan max, 12&nbsp;min.
+          </p>
+        </div>
+        <div class="sh-tour__phones">
+          {{ partial "iphone-mockup.html" (dict "label" "Dashboard Roborock" "images" (slice
+            (dict "src" "/img/smart-home/robot-1.webp" "alt" "Robot aspirateur — vue principale")
+            (dict "src" "/img/smart-home/robot-2.webp" "alt" "Robot aspirateur — sélection de pièce")
+            (dict "src" "/img/smart-home/robot-3.webp" "alt" "Robot aspirateur — map interactive")
+          )) }}
+        </div>
+      </div>
+
+      <div class="sh-tour__group">
+        <div class="sh-tour__head">
+          <h3>🖨️ Prusa MK4S — impressions 3D</h3>
+          <p>
+            État de l'imprimante, ETA, caméra Buddy Cam, température caisson,
+            et détection visuelle d'échec via Claude vision.
+          </p>
+        </div>
+        <div class="sh-tour__phones">
+          {{ partial "iphone-mockup.html" (dict "label" "Dashboard Prusa" "images" (slice
+            (dict "src" "/img/smart-home/prusa-1.webp" "alt" "Prusa — état d'impression")
+            (dict "src" "/img/smart-home/prusa-2.webp" "alt" "Prusa — caméra Buddy Cam")
+            (dict "src" "/img/smart-home/prusa-3.webp" "alt" "Prusa — paramètres caisson")
+          )) }}
+        </div>
+      </div>
+
+      <div class="sh-tour__group">
+        <div class="sh-tour__head">
+          <h3>🧺 Maintenance &amp; linge</h3>
+          <p>
+            Lave-linge, sèche-linge, lave-vaisselle (Samsung Home Connect) :
+            cycle en cours, ETA, conso, notif fin de cycle.
+          </p>
+        </div>
+        <div class="sh-tour__phones">
+          {{ partial "iphone-mockup.html" (dict "label" "Dashboard maintenance" "images" (slice
+            (dict "src" "/img/smart-home/maintenance-1.webp" "alt" "Maintenance — lave-linge")
+            (dict "src" "/img/smart-home/maintenance-2.webp" "alt" "Maintenance — sèche-linge")
+            (dict "src" "/img/smart-home/maintenance-3.webp" "alt" "Maintenance — lave-vaisselle")
+          )) }}
+        </div>
+      </div>
+
+      <div class="sh-tour__group">
+        <div class="sh-tour__head">
+          <h3>🔋 Batteries · 📦 Colis · 🗓️ Calendrier</h3>
+          <p>
+            Trois mini-dashboards utilitaires : niveau de batterie de tous les
+            capteurs (alerte sous 20 %), suivi colis Parcel, agenda iCloud du jour.
+          </p>
+        </div>
+        <div class="sh-tour__phones">
+          {{ partial "iphone-mockup.html" (dict "label" "Batteries des capteurs" "images" (slice
+            (dict "src" "/img/smart-home/batteries.webp" "alt" "Batteries — niveau par capteur")
+          )) }}
+          {{ partial "iphone-mockup.html" (dict "label" "Suivi colis" "images" (slice
+            (dict "src" "/img/smart-home/colis.webp" "alt" "Colis — suivi Parcel")
+          )) }}
+          {{ partial "iphone-mockup.html" (dict "label" "Calendrier iCloud" "images" (slice
+            (dict "src" "/img/smart-home/calendrier.webp" "alt" "Calendrier — événements du jour")
+          )) }}
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Desktop view callout — exception assumée -->
+    <div class="sh-desktop-callout">
+      <p class="sh-desktop-callout__label">Et sur grand écran ?</p>
+      <img src="/img/smart-home/showcase-desktop.webp" alt="Vue desktop du dashboard Home Assistant" width="3450" height="1990" loading="lazy" decoding="async">
+      <p class="sh-desktop-callout__caption">
+        Une version desktop existe (la voilà) — mais en pratique, je ne l'ouvre
+        que pour configurer. 99 % du pilotage se fait depuis l'iPhone.
+      </p>
+    </div>
+
+  </div>
+</section>
+
+<!-- ========== WALL PANEL ========== -->
+<section class="sh-section">
+  <div class="container">
+    <p class="sh-section__kicker">🖼️ Wall panel</p>
+    <h2 class="sh-section__title">Pi 7" tactile dans l'entrée.</h2>
+    <div class="sh-section__intro">
+      <p>
+        Raspberry Pi + écran DSI officiel 7" tactile en mode Chromium kiosk.
+        Affiche un dashboard panoramique <strong>800×480</strong> avec :
+      </p>
+      <ul>
+        <li>6 tuiles lumières par pièce (tap = toggle, hold = popup)</li>
+        <li>6 volets motorisés avec contrôles inline</li>
+        <li>4 actions globales (Quitter, Sieste Raphaël, Spéciale Nounou, Vacances)</li>
+        <li>Statut météo + chip prochain événement calendrier</li>
+      </ul>
+      <p>
+        Réveil sur détection présence Hue motion entrée, veille 2&nbsp;min après absence.
+        Theme glass dédié, recyclage d'un Pi qui dormait dans un placard.
+      </p>
+    </div>
+    <p class="sh-wallpanel-pending">
+      📸 Photo à venir : le support mural est en cours d'impression 3D.
+    </p>
+  </div>
+</section>
+
+<!-- ========== STACK ========== -->
+<section class="sh-section sh-section--soft">
+  <div class="container">
+    <p class="sh-section__kicker">🧱 Stack</p>
+    <h2 class="sh-section__title">Ce qu'il y a sous le capot.</h2>
+    <table class="sh-stack-table">
+      <tbody>
+        <tr>
+          <th>Backbone</th>
+          <td><strong>Home Assistant OS</strong> (VM Hyper-V) · <strong>Pangolin</strong> reverse proxy (alternative à Nabu Casa)</td>
+        </tr>
+        <tr>
+          <th>Matter / Zigbee</th>
+          <td>Aqara Hub M3 (Bridge Matter) · UniFi Protect · Philips Hue</td>
+        </tr>
+        <tr>
+          <th>Climatisation</th>
+          <td>Daikin (bridge custom : <code>input_number.salon_target_temperature</code> = source de vérité)</td>
+        </tr>
+        <tr>
+          <th>Énergie</th>
+          <td>Lixee Linky · RTE Tempo · Power Flow Card+</td>
+        </tr>
+        <tr>
+          <th>AI</th>
+          <td>Anthropic Claude Haiku 4.5 (brief soir + détection vision Prusa)</td>
+        </tr>
+        <tr>
+          <th>Voice</th>
+          <td>HA Companion iOS Assist (Voice PE prévu)</td>
+        </tr>
+        <tr>
+          <th>Wall panel</th>
+          <td>Raspberry Pi + Display 7" tactile en kiosk Chromium</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<!-- ========== ARCHITECTURE ========== -->
+<section class="sh-section">
+  <div class="container">
+    <p class="sh-section__kicker">🗺️ Architecture</p>
+    <h2 class="sh-section__title">Comment tout est branché.</h2>
+    <pre class="sh-archi"><code>                   ┌─ iPhone Companion (notif, Assist, widget Scriptable)
+                   │
+    Pangolin ──── HAOS 192.168.1.15
+       │             │
+       │             ├── Aqara Hub M3 ── (Matter) ── 30+ capteurs Aqara
+       │             ├── Hue Bridge ── lights + motion
+       │             ├── UniFi Console ── G4 Instant (motion + person_detected)
+       │             ├── Netatmo ── T°/HR/CO2 par pièce + extérieur
+       │             ├── Daikin ── clim salon
+       │             ├── Tesla ── charge, climate, location
+       │             ├── Roborock S8 Pro Ultra ── map + zones
+       │             ├── Samsung ── LV/LL/SL/Four
+       │             ├── Anthropic API ── Claude
+       │             └── Pi 7" kiosk entrée (Wi-Fi, SSH key)
+       │
+       └─ home.domokit.fr (accès distant)</code></pre>
+  </div>
+</section>
+
+<!-- ========== EN CHIFFRES ========== -->
+<section class="sh-section sh-section--soft">
+  <div class="container">
+    <p class="sh-section__kicker">📊 En chiffres</p>
+    <h2 class="sh-section__title">La maison en quelques nombres.</h2>
+    <div class="sh-numbers">
+      <div class="sh-number"><span class="sh-number__value">49</span><p class="sh-number__label">automatisations actives</p></div>
+      <div class="sh-number"><span class="sh-number__value">12</span><p class="sh-number__label">scripts personnalisés</p></div>
+      <div class="sh-number"><span class="sh-number__value">30+</span><p class="sh-number__label">capteurs Aqara appairés en Matter</p></div>
+      <div class="sh-number"><span class="sh-number__value">4</span><p class="sh-number__label">caméras UniFi avec AI person detection</p></div>
+      <div class="sh-number"><span class="sh-number__value">6</span><p class="sh-number__label">pièces avec capteurs T° / HR / CO2 individuels</p></div>
+      <div class="sh-number"><span class="sh-number__value">~30¢</span><p class="sh-number__label">par mois pour le brief Claude AI</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- ========== POURQUOI PAS ALEXA ========== -->
+<section class="sh-section">
+  <div class="container">
+    <p class="sh-section__kicker">🤔 Pourquoi pas Alexa</p>
+    <h2 class="sh-section__title">Et pas un système clé en main ?</h2>
+    <ol class="sh-reasons">
+      <li><strong>Données locales</strong> — tout reste sur le réseau, Anthropic ne voit que les requêtes de brief, pas la maison en continu.</li>
+      <li><strong>Pas de cloud propriétaire</strong> — si Aqara/Tesla/Samsung ferment leur service demain, la maison continue de tourner sur le bus local.</li>
+      <li><strong>Extensibilité</strong> — nouvelle intégration ? 5&nbsp;min en YAML. Nouvelle automation ? 30 lignes. Pas de plug-in store fermé.</li>
+      <li><strong>Coût</strong> — ~5&nbsp;€/mois (Claude API + électricité). Vs Alexa+Hub propriétaire = abonnement perpétuel.</li>
+    </ol>
+  </div>
+</section>
+
+<!-- ========== CTA ========== -->
+<section class="sh-cta">
+  <div class="container">
+    <h2>Te tenter ?</h2>
+    <p>
+      Si tu veux discuter d'une install Home Assistant ou d'un wall panel
+      tactile pour ton foyer (ou ton cabinet), écris-moi.
+    </p>
+    <a href="/#contact" class="sh-cta__btn">Me contacter →</a>
+    <p class="sh-cta__sign">🦦 cyberloutre.fr · code + soin</p>
+  </div>
+</section>
+
+{{ end }}

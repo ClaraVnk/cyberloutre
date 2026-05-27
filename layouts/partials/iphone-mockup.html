@@ -1,0 +1,22 @@
+{{- /*
+    Renders an iPhone mockup with vertically-scrollable screens inside.
+    Usage:
+        {{ partial "iphone-mockup.html" (dict
+            "modifier" "showcase"
+            "label" "Dashboard principal"
+            "images" (slice
+                (dict "src" "/img/.../1.webp" "alt" "Alt 1")
+                (dict "src" "/img/.../2.webp" "alt" "Alt 2")
+            )
+        ) }}
+*/ -}}
+{{- $modifier := .modifier | default "" -}}
+<div class="iphone-mockup{{ if $modifier }} iphone-mockup--{{ $modifier }}{{ end }}" role="figure" aria-label="{{ .label }}">
+    <span class="iphone-mockup__notch" aria-hidden="true"></span>
+    <div class="iphone-mockup__screen" tabindex="0">
+        {{- range .images }}
+        <img src="{{ .src }}" alt="{{ .alt }}" width="1206" height="2622" loading="lazy" decoding="async">
+        {{- end }}
+    </div>
+    <span class="iphone-mockup__hint" aria-hidden="true">↕ scroll dans l'écran</span>
+</div>
