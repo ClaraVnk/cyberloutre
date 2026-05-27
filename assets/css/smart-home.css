@@ -63,10 +63,17 @@
     letter-spacing: -0.01em;
 }
 
-/* ---- Hero ---- */
+/* ---- Hero ----
+   Léger glow violet/cyan en haut + bordure de séparation avec la première
+   section, pour que le hero se détache visuellement de l'Aperçu. */
 .sh-hero {
     padding: 4rem 0 2.5rem;
     text-align: center;
+    background:
+        radial-gradient(ellipse 90% 70% at 50% -20%, rgba(125, 211, 252, 0.12), transparent 60%),
+        radial-gradient(ellipse 50% 40% at 85% 25%, rgba(139, 92, 246, 0.10), transparent 60%),
+        radial-gradient(ellipse 50% 40% at 15% 30%, rgba(56, 189, 248, 0.06), transparent 60%);
+    border-bottom: 1px solid var(--sh-border);
 }
 .sh-hero__kicker {
     display: inline-block;
