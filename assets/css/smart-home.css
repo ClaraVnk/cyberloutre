@@ -459,35 +459,112 @@
    Responsive
    ============================================================ */
 
+/* --- Tablet & laptop (≤ 900px) --- */
 @media (max-width: 900px) {
     .sh-autos { grid-template-columns: 1fr; }
     .sh-numbers { grid-template-columns: repeat(2, 1fr); }
     .sh-stack-table th { width: 130px; }
-    .iphone-mockup--showcase {
-        --iphone-w: 280px;
-        --iphone-h: 580px;
-    }
 }
 
-@media (max-width: 600px) {
+/* --- Mobile & touch devices (≤ 768px) -----------------------
+   Phones become natural stacks (no internal scroll trap on touch).
+   Page scroll wins, screenshots stack inside the phone frame. */
+@media (max-width: 768px) {
+    .page-smart-home .container { padding: 0 1.125rem; }
+
     .sh-section { padding: 3rem 0; }
-    .sh-hero { padding: 3rem 0 2rem; }
-    .sh-tour { gap: 3rem; }
-    .sh-tour__phones { gap: 2rem; }
-    .iphone-mockup {
-        --iphone-w: 260px;
-        --iphone-h: 540px;
-    }
-}
+    .sh-hero { padding: 3rem 0 1.75rem; }
+    .sh-hero__title { font-size: 2rem; }
+    .sh-hero__quote { font-size: 0.875rem; padding: 0.875rem 1rem; }
 
-@media (max-width: 380px) {
-    .sh-numbers { grid-template-columns: 1fr; }
-    .iphone-mockup {
-        --iphone-w: 240px;
-        --iphone-h: 500px;
-    }
+    .sh-tour { gap: 3rem; }
+    .sh-tour__phones { gap: 1.5rem; }
+    .sh-tour__head h3 { font-size: 1.1875rem; }
+
+    /* Kill internal scroll on mobile : phones become natural stacks */
+    .iphone-mockup,
     .iphone-mockup--showcase {
         --iphone-w: 240px;
-        --iphone-h: 500px;
+        --iphone-h: auto;
+        height: auto;
+        padding: 8px;
+        border-radius: 36px;
     }
+    .iphone-mockup__screen {
+        height: auto;
+        overflow: hidden;
+        scroll-snap-type: none;
+        overscroll-behavior: auto;
+        border-radius: 28px;
+    }
+    .iphone-mockup__screen img { scroll-snap-align: none; }
+    .iphone-mockup__hint { display: none; }
+    .iphone-mockup__notch {
+        width: 80px;
+        height: 22px;
+        top: 14px;
+    }
+
+    /* Stack table → list de paires sur mobile */
+    .sh-stack-table,
+    .sh-stack-table tbody,
+    .sh-stack-table tr,
+    .sh-stack-table th,
+    .sh-stack-table td { display: block; width: 100%; }
+    .sh-stack-table tr {
+        background: var(--sh-bg-soft);
+        border: 1px solid var(--sh-border);
+        border-radius: 10px;
+        padding: 0.875rem 1rem;
+        margin-bottom: 0.625rem;
+    }
+    .sh-stack-table th, .sh-stack-table td {
+        padding: 0.125rem 0;
+        border: 0;
+    }
+    .sh-stack-table th {
+        font-size: 0.75rem;
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+        color: var(--sh-accent);
+    }
+
+    /* Reasons : moins de padding gauche */
+    .sh-reasons li { padding: 1rem 1.125rem 1rem 2.75rem; }
+    .sh-reasons li::before { left: 0.875rem; top: 0.875rem; font-size: 0.875rem; }
+
+    /* Architecture : font plus petite */
+    .sh-archi { font-size: 0.6875rem; padding: 1rem; }
+
+    /* Section titles un cran plus petits */
+    .sh-section__title { font-size: 1.5rem; }
+    .sh-section__kicker { font-size: 0.6875rem; }
+
+    /* Auto cards : padding réduit */
+    .sh-auto { padding: 1.25rem; }
+    .sh-auto__title { font-size: 1rem; }
+
+    /* Number cards plus compactes */
+    .sh-number { padding: 1.25rem 0.875rem; }
+    .sh-number__value { font-size: 1.875rem; }
+}
+
+/* --- Petits téléphones (≤ 480px) --- */
+@media (max-width: 480px) {
+    .iphone-mockup,
+    .iphone-mockup--showcase {
+        --iphone-w: 220px;
+    }
+    .sh-tour__phones { gap: 1.25rem; }
+}
+
+/* --- Très petits écrans (≤ 360px) --- */
+@media (max-width: 360px) {
+    .sh-numbers { grid-template-columns: 1fr; }
+    .iphone-mockup,
+    .iphone-mockup--showcase {
+        --iphone-w: 200px;
+    }
+    .sh-section__title { font-size: 1.375rem; }
+    .sh-hero__title { font-size: 1.75rem; }
 }
