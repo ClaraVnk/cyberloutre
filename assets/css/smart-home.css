@@ -151,6 +151,13 @@
     height: auto;
     scroll-snap-align: start;
 }
+/* When a mockup contains a single image (batteries, colis, calendrier…),
+   fill the entire screen — pas de bande noire en dessous. */
+.iphone-mockup__screen img:only-child {
+    height: 100%;
+    object-fit: cover;
+    object-position: top center;
+}
 .iphone-mockup__hint {
     position: absolute;
     bottom: 14px;
@@ -330,35 +337,37 @@
 }
 .sh-tour__phones--single { justify-content: center; }
 
-/* Desktop callout block */
+/* Desktop callout block — full-width on container, image grosse pour qu'on
+   voit vraiment le dashboard. */
 .sh-desktop-callout {
-    margin: 2rem auto;
-    max-width: 900px;
+    margin: 3rem 0 0;
     background: var(--sh-bg-soft);
     border: 1px dashed var(--sh-border-strong);
-    border-radius: 16px;
-    padding: 1.5rem;
+    border-radius: 18px;
+    padding: 1.75rem;
 }
 .sh-desktop-callout__label {
     font-family: var(--sh-mono);
-    font-size: 0.75rem;
+    font-size: 0.8125rem;
     color: var(--sh-rust);
     text-transform: uppercase;
     letter-spacing: 0.08em;
-    margin: 0 0 0.75rem;
+    margin: 0 0 1rem;
 }
 .sh-desktop-callout img {
     width: 100%;
     height: auto;
-    border-radius: 10px;
+    border-radius: 12px;
     border: 1px solid var(--sh-border);
     display: block;
+    box-shadow: 0 18px 40px -16px rgba(0, 0, 0, 0.45);
 }
 .sh-desktop-callout__caption {
     color: var(--sh-text-muted);
-    font-size: 0.875rem;
-    margin: 0.75rem 0 0;
+    font-size: 0.9375rem;
+    margin: 1rem 0 0;
     font-style: italic;
+    max-width: 60ch;
 }
 
 /* ---- Stack table ---- */
