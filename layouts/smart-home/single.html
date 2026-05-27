@@ -648,4 +648,45 @@
   </div>
 </section>
 
+<!-- ========== FOOTER ========== -->
+<footer class="site-footer">
+  <div class="container container-prose">
+    <p>
+      🦦 © {{ now.Year }} Loutre · <a href="https://github.com/ClaraVnk/cyberloutre.fr" target="_blank" rel="noopener">Source sur GitHub</a> · Hébergé sur Infomaniak
+    </p>
+    <p class="footer-tagline" aria-live="polite">
+      <span class="quote-text" id="quote-text" data-index="0"></span>
+      <span class="quote-author" id="quote-author"></span>
+    </p>
+    <script>
+    (function () {
+      var quotes = [
+        { q: "« C'est pas faux. »", a: "— Perceval" },
+        { q: "« On en a gros. »", a: "— Perceval" },
+        { q: "« Le gras, c'est la vie. »", a: "— Karadoc" },
+        { q: "« Faut pas prendre les enfants du bon Dieu pour des canards sauvages. »", a: "— Perceval" },
+        { q: "« Pour qu'un repas soit réussi, tout est dans le pain. »", a: "— Karadoc" },
+        { q: "« Y'a des baffes qui se perdent… »", a: "— Léodagan" }
+      ];
+      var qEl = document.getElementById('quote-text');
+      var aEl = document.getElementById('quote-author');
+      var i = Math.floor(Math.random() * quotes.length);
+      function show () {
+        qEl.style.opacity = '0';
+        aEl.style.opacity = '0';
+        setTimeout(function () {
+          qEl.textContent = quotes[i].q;
+          aEl.textContent = ' ' + quotes[i].a + ', Kaamelott';
+          qEl.style.opacity = '1';
+          aEl.style.opacity = '1';
+          i = (i + 1) % quotes.length;
+        }, 400);
+      }
+      show();
+      setInterval(show, 6000);
+    })();
+    </script>
+  </div>
+</footer>
+
 {{ end }}
