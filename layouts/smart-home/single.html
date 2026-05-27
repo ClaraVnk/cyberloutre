@@ -61,13 +61,13 @@
     <h2 class="sh-section__title">« Passive smart home ».</h2>
     <div class="sh-section__intro">
       <p>
-        Pas de <em>« Hey Siri, allume la lumière »</em>. La maison observe et agit :
+        Pas de <em>« Hey Siri, allume la lumière »</em>. La maison observe, et agit :
       </p>
       <ul>
-        <li>La SDB s'allume quand on entre, reste allumée tant qu'on prend une douche, s'éteint quand on en sort</li>
-        <li>Les volets se ferment quand il pleut <strong>+</strong> qu'une fenêtre est ouverte</li>
-        <li>Le four notifie uniquement les iPhones des personnes présentes</li>
-        <li>Claude AI rédige chaque soir un brief naturel de la journée</li>
+        <li>La salle de bain s'allume toute seule quand on entre, reste éclairée le temps de la douche, puis s'éteint quand on en sort.</li>
+        <li>Les volets se ferment automatiquement dès qu'il pleut et qu'une fenêtre est restée ouverte.</li>
+        <li>Le four ne notifie que les iPhones des personnes effectivement à la maison — pas la peine d'alerter Kevin s'il est au bureau.</li>
+        <li>Chaque soir, Claude AI rédige un petit brief naturel de la journée écoulée, plutôt qu'un dump de chiffres.</li>
       </ul>
       <p>C'est silencieux, contextuel, et ça libère du temps mental.</p>
     </div>
@@ -94,9 +94,10 @@
         <span class="sh-auto__emoji">🚿</span>
         <h3 class="sh-auto__title">Douche en cours = lumière protégée</h3>
         <p class="sh-auto__desc">
-          Couplage capteur de mouvement Aqara P2 + humidité SDB. Tant que
-          <code>HR &gt; 55%</code> et que quelqu'un est dans la pièce, la lumière
-          ne s'éteint pas, même sur un appui accidentel ou un timer firmware fantôme.
+          Couplage entre le capteur de mouvement Aqara P2 et l'humidité de la
+          salle de bain. Tant que <code>HR &gt; 55 %</code> et que quelqu'un est
+          dans la pièce, la lumière ne s'éteint pas — même sur un appui
+          accidentel ou un timer firmware fantôme.
         </p>
       </article>
 
