@@ -10,7 +10,8 @@ from PIL import Image, ImageDraw, ImageFont, ImageFilter
 from pathlib import Path
 import urllib.request
 
-OUT = Path("/Users/claravanacker/Projects/cyberloutre.fr/static/img/smart-home/og-smart-home.png")
+OUT_PNG = Path("/Users/claravanacker/Projects/cyberloutre.fr/static/img/smart-home/og-smart-home.png")
+OUT_JPG = Path("/Users/claravanacker/Projects/cyberloutre.fr/static/img/smart-home/og-smart-home.jpg")
 LOGO_URL = "https://brands.home-assistant.io/_/homeassistant/logo.png"
 LOGO_TMP = Path("/tmp/ha-logo.png")
 
@@ -103,8 +104,10 @@ def main():
     # Subtle bottom-left accent dot
     draw.ellipse([76, H - 56, 92, H - 40], fill=(125, 211, 252))
 
-    img.save(OUT, "PNG", optimize=True)
-    print(f"✓ OG saved → {OUT} ({OUT.stat().st_size // 1024} KB, {img.size})")
+    img.save(OUT_PNG, "PNG", optimize=True)
+    print(f"✓ PNG  → {OUT_PNG} ({OUT_PNG.stat().st_size // 1024} KB, {img.size})")
+    img.save(OUT_JPG, "JPEG", quality=88, optimize=True)
+    print(f"✓ JPEG → {OUT_JPG} ({OUT_JPG.stat().st_size // 1024} KB, {img.size})")
 
 
 if __name__ == "__main__":
