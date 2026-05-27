@@ -576,6 +576,11 @@
     letter-spacing: 0.08em;
     margin: 0 0 1rem;
 }
+.sh-desktop-callout__zoom {
+    display: block;
+    position: relative;
+    cursor: zoom-in;
+}
 .sh-desktop-callout img {
     width: 100%;
     height: auto;
@@ -583,6 +588,34 @@
     border: 1px solid var(--sh-border);
     display: block;
     box-shadow: 0 18px 40px -16px rgba(0, 0, 0, 0.45);
+    transition: transform .25s ease, box-shadow .25s ease;
+}
+.sh-desktop-callout__zoom:hover img {
+    transform: scale(1.005);
+    box-shadow: 0 24px 50px -16px rgba(0, 0, 0, 0.55);
+}
+.sh-desktop-callout__hint {
+    position: absolute;
+    bottom: 14px;
+    right: 14px;
+    background: rgba(15, 17, 25, 0.85);
+    color: var(--sh-text-soft);
+    font-family: var(--sh-mono);
+    font-size: 0.75rem;
+    letter-spacing: 0.02em;
+    padding: 0.375rem 0.75rem;
+    border-radius: 999px;
+    opacity: 0;
+    transition: opacity .2s ease;
+    pointer-events: none;
+}
+.sh-desktop-callout__zoom:hover .sh-desktop-callout__hint,
+.sh-desktop-callout__zoom:focus-visible .sh-desktop-callout__hint {
+    opacity: 1;
+}
+/* Show hint always on touch devices (no hover) */
+@media (hover: none) {
+    .sh-desktop-callout__hint { opacity: 1; }
 }
 .sh-desktop-callout__caption {
     color: var(--sh-text-muted);
