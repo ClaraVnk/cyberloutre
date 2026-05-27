@@ -245,6 +245,16 @@
     letter-spacing: -0.01em;
 }
 
+.sh-widget-img {
+    width: 100%;
+    max-width: 360px;
+    height: auto;
+    border-radius: 24px;
+    box-shadow:
+        0 30px 60px -20px rgba(0, 0, 0, 0.45),
+        0 12px 24px -8px rgba(0, 0, 0, 0.3);
+}
+
 /* ---- Automations grid (6 cards) ---- */
 .sh-autos {
     display: grid;
