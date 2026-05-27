@@ -228,34 +228,11 @@ def detect_password_line(img, search_from_y):
 
 
 def redact_qr(img, region):
-    """Replace the QR code area with a clean light placeholder."""
-    draw = ImageDraw.Draw(img)
-    left, top, right, bottom = region
-    w_r = right - left
-    h_r = bottom - top
-    draw.rounded_rectangle(region, radius=40, fill=PLACEHOLDER_FILL,
-                           outline=PLACEHOLDER_BORDER, width=4)
-    font_lock = load_font(140)
-    font_label = load_font(56)
-    font_sub = load_font(38)
-    lock = "🔒"
-    label = "QR masqué"
-    sub = "(démo publique)"
-
-    lock_bbox = draw.textbbox((0, 0), lock, font=font_lock)
-    label_bbox = draw.textbbox((0, 0), label, font=font_label)
-    sub_bbox = draw.textbbox((0, 0), sub, font=font_sub)
-    lock_w = lock_bbox[2] - lock_bbox[0]; lock_h = lock_bbox[3] - lock_bbox[1]
-    label_w = label_bbox[2] - label_bbox[0]; label_h = label_bbox[3] - label_bbox[1]
-    sub_w = sub_bbox[2] - sub_bbox[0]; sub_h = sub_bbox[3] - sub_bbox[1]
-
-    total_h = lock_h + 30 + label_h + 14 + sub_h
-    y0 = top + (h_r - total_h) // 2
-    draw.text((left + (w_r - lock_w) // 2, y0), lock, font=font_lock, fill=PLACEHOLDER_TEXT)
-    draw.text((left + (w_r - label_w) // 2, y0 + lock_h + 30), label,
-              font=font_label, fill=PLACEHOLDER_TEXT)
-    draw.text((left + (w_r - sub_w) // 2, y0 + lock_h + 30 + label_h + 14), sub,
-              font=font_sub, fill=PLACEHOLDER_TEXT_DIM)
+    """Blur the QR area with high radius — illisible mais discret, on garde
+    le look de la carte d'origine plutôt que d'imposer un gros placeholder."""
+    cropped = img.crop(region)
+    blurred = cropped.filter(ImageFilter.GaussianBlur(radius=32))
+    img.paste(blurred, (region[0], region[1]))
 
 
 def redact_password(img, region):
@@ -276,27 +253,11 @@ def redact_password(img, region):
 
 
 def process_one(src: Path, dst: Path):
+    """Loutre fournit désormais les captures déjà masquées à la source
+    (QR codes couverts par un Doge, password values cachées). On se contente
+    de convertir en WebP — la redaction côté script ferait flouter le masquage
+    déjà fait, ce qui donne un rendu sale."""
     img = Image.open(src).convert("RGB")
-    w, h = img.size
-
-    # Crop iOS status bar
-    img = img.crop((0, IOS_STATUS_BAR_HEIGHT, w, h))
-
-    # Detect & redact QR
-    qr = detect_qr_region(img, debug=True)
-    if qr:
-        print(f"  QR detected at {qr}")
-        redact_qr(img, qr)
-        # Look for password line below the QR
-        pw = detect_password_line(img, qr[3] + 30)
-        if pw:
-            print(f"  Password line at {pw}")
-            redact_password(img, pw)
-        else:
-            print(f"  No password line detected (may be the App QR — no creds)")
-    else:
-        print(f"  ⚠ No QR detected in {src.name}")
-
     img.save(dst, "WEBP", quality=85, method=6)
     print(f"  ✓ {dst.name}  ({dst.stat().st_size // 1024} KB)")
 
