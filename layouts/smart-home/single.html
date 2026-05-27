@@ -355,9 +355,12 @@
       </div>
     </div>
     <div class="sh-split__visual">
-      <figure class="pi-mockup" role="img" aria-label="Affichage du Pi 7&quot; tactile fixé dans l'entrée">
-        <div class="pi-mockup__screen">
-          <img src="/img/smart-home/pi-entree.webp" alt="Dashboard kiosk affiché sur le Pi tactile de l'entrée" width="1011" height="1060" loading="lazy" decoding="async">
+      <figure class="pi-mockup" role="img" aria-label="Pi 7&quot; tactile fixé dans l'entrée — vue d'ensemble">
+        <div class="pi-mockup__bezel">
+          <div class="pi-mockup__screen">
+            <img src="/img/smart-home/pi-entree.webp" alt="Dashboard kiosk affiché sur le Pi tactile de l'entrée — lumières par pièce, volets, actions globales" width="1536" height="884" loading="lazy" decoding="async">
+          </div>
+          <span class="pi-mockup__camera" aria-hidden="true"></span>
         </div>
         <figcaption class="pi-mockup__caption">Vue d'ensemble · entrée · veille 2 min</figcaption>
       </figure>
@@ -394,27 +397,8 @@
 
 <!-- ========== QR INVITÉS ========== -->
 <section class="sh-section sh-section--soft">
-  <div class="container">
-    <p class="sh-section__kicker">🪧 Invités</p>
-    <h2 class="sh-section__title">Un QR code, et c'est dedans.</h2>
-    <div class="sh-section__intro">
-      <p>
-        Dans l'entrée, j'ai posé une <strong>plaque plexi</strong> avec trois QR codes.
-        L'invité scanne le premier avec son smartphone, il est sur le Wi-Fi
-        <em>Visiteurs</em>. Il scanne le deuxième, il atterrit sur un dashboard
-        Home Assistant minimal — lumières du salon, musique, clim, volets — et
-        il est <strong>déjà connecté</strong>, sans login à taper.
-      </p>
-      <p>
-        Le réseau Visiteurs est <strong>isolé du LAN principal</strong> : ses
-        appareils ne voient ni les caméras, ni le robot, ni les capteurs. Le
-        dashboard guest n'a accès à aucune automation, aucune donnée intime.
-        Zéro post-it griffonné avec le mot de passe Wi-Fi, pas de galère
-        avec Tatie Daniele qui panique parce qu'elle doit rentrer des
-        identifiants dans une appli qu'elle ne connait pas.
-      </p>
-    </div>
-    <div class="sh-tour__phones sh-tour__phones--single" style="margin-top: 2rem;">
+  <div class="container sh-split">
+    <div class="sh-split__visual">
       {{ partial "iphone-mockup.html" (dict
         "label" "Page d'accueil pour les invités"
         "images" (slice
@@ -423,6 +407,27 @@
           (dict "src" "/img/smart-home/welcome-app.webp" "alt" "Welcome — étape 3 : QR optionnel de l'app HA Companion")
         )
       ) }}
+    </div>
+    <div class="sh-split__text">
+      <p class="sh-section__kicker">🪧 Invités</p>
+      <h2 class="sh-section__title">Un QR code, et c'est dedans.</h2>
+      <div class="sh-section__intro">
+        <p>
+          Dans l'entrée, j'ai posé une <strong>plaque plexi</strong> avec trois QR codes.
+          L'invité scanne le premier avec son smartphone, il est sur le Wi-Fi
+          <em>Visiteurs</em>. Il scanne le deuxième, il atterrit sur un dashboard
+          Home Assistant minimal — lumières du salon, musique, clim, volets — et
+          il est <strong>déjà connecté</strong>, sans login à taper.
+        </p>
+        <p>
+          Le réseau Visiteurs est <strong>isolé du LAN principal</strong> : ses
+          appareils ne voient ni les caméras, ni le robot, ni les capteurs. Le
+          dashboard guest n'a accès à aucune automation, aucune donnée intime.
+          Zéro post-it griffonné avec le mot de passe Wi-Fi, pas de galère
+          avec Tatie Daniele qui panique parce qu'elle doit rentrer des
+          identifiants dans une appli qu'elle ne connait pas.
+        </p>
+      </div>
     </div>
   </div>
 </section>
