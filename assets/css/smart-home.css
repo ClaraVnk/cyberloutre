@@ -104,9 +104,8 @@
 /* ---- iPhone mockup ---- */
 .iphone-mockup {
     --iphone-w: 280px;
-    --iphone-h: 580px;
     width: var(--iphone-w);
-    height: var(--iphone-h);
+    aspect-ratio: 280 / 580;
     margin: 0 auto;
     position: relative;
     background: linear-gradient(145deg, #2a2d36, #14161c);
@@ -168,7 +167,7 @@
 /* Wider mockup for the hero showcase */
 .iphone-mockup--showcase {
     --iphone-w: 320px;
-    --iphone-h: 680px;
+    aspect-ratio: 320 / 680;
 }
 
 /* ---- Section ---- */
@@ -467,10 +466,10 @@
 }
 
 /* --- Mobile & touch devices (≤ 768px) -----------------------
-   Phones become natural stacks (no internal scroll trap on touch).
-   Page scroll wins, screenshots stack inside the phone frame. */
+   On garde le scroll interne (snap + overscroll contain).
+   On élargit les mockups pour qu'ils occupent vraiment la largeur. */
 @media (max-width: 768px) {
-    .page-smart-home .container { padding: 0 1.125rem; }
+    .page-smart-home .container { padding: 0 1rem; }
 
     .sh-section { padding: 3rem 0; }
     .sh-hero { padding: 3rem 0 1.75rem; }
@@ -481,28 +480,21 @@
     .sh-tour__phones { gap: 1.5rem; }
     .sh-tour__head h3 { font-size: 1.1875rem; }
 
-    /* Kill internal scroll on mobile : phones become natural stacks */
-    .iphone-mockup,
+    /* Mockups : largeur responsive (jusqu'à 90 % du viewport) */
+    .iphone-mockup {
+        --iphone-w: min(82vw, 340px);
+    }
     .iphone-mockup--showcase {
-        --iphone-w: 240px;
-        --iphone-h: auto;
-        height: auto;
-        padding: 8px;
-        border-radius: 36px;
+        --iphone-w: min(88vw, 360px);
     }
-    .iphone-mockup__screen {
-        height: auto;
-        overflow: hidden;
-        scroll-snap-type: none;
-        overscroll-behavior: auto;
-        border-radius: 28px;
-    }
-    .iphone-mockup__screen img { scroll-snap-align: none; }
-    .iphone-mockup__hint { display: none; }
     .iphone-mockup__notch {
-        width: 80px;
+        width: 72px;
         height: 22px;
         top: 14px;
+    }
+    .iphone-mockup__hint {
+        font-size: 0.625rem;
+        padding: 0.1875rem 0.5rem;
     }
 
     /* Stack table → list de paires sur mobile */
@@ -549,22 +541,9 @@
     .sh-number__value { font-size: 1.875rem; }
 }
 
-/* --- Petits téléphones (≤ 480px) --- */
-@media (max-width: 480px) {
-    .iphone-mockup,
-    .iphone-mockup--showcase {
-        --iphone-w: 220px;
-    }
-    .sh-tour__phones { gap: 1.25rem; }
-}
-
-/* --- Très petits écrans (≤ 360px) --- */
+/* --- Très petits écrans (≤ 360px) : single col bento --- */
 @media (max-width: 360px) {
     .sh-numbers { grid-template-columns: 1fr; }
-    .iphone-mockup,
-    .iphone-mockup--showcase {
-        --iphone-w: 200px;
-    }
     .sh-section__title { font-size: 1.375rem; }
     .sh-hero__title { font-size: 1.75rem; }
 }
