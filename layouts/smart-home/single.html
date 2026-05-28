@@ -246,25 +246,25 @@
 
       <div class="sh-tour__group">
         <div class="sh-tour__head">
-          <h3>🚗 Tesla Josette · 🤖 Roborock · 🖨️ Prusa</h3>
+          <h3>🚗 Tesla · 🤖 Roborock · 🖨️ Prusa</h3>
           <p>
             Trois dashboards d'objets qui vivent leur vie : la voiture
-            (charge, climate, location, covers), l'aspirateur (map 7 pièces,
-            scénario invités), l'imprimante 3D (ETA, caméra Buddy Cam,
-            détection d'échec via Claude vision).
+            (charge, climatisation, localisation, ouvrants), l'aspirateur
+            (carte des 7 pièces, scénario invités), l'imprimante 3D (temps
+            restant, caméra de suivi, détection d'échec par analyse visuelle Claude).
           </p>
         </div>
         <div class="sh-tour__phones">
           {{ partial "iphone-mockup.html" (dict "label" "Dashboard Tesla" "images" (slice
             (dict "src" "/img/smart-home/tesla-1.webp" "alt" "Tesla — vue principale")
             (dict "src" "/img/smart-home/tesla-2.webp" "alt" "Tesla — détail charge")
-            (dict "src" "/img/smart-home/tesla-3.webp" "alt" "Tesla — climate")
-            (dict "src" "/img/smart-home/tesla-4.webp" "alt" "Tesla — location et covers")
+            (dict "src" "/img/smart-home/tesla-3.webp" "alt" "Tesla — climatisation")
+            (dict "src" "/img/smart-home/tesla-4.webp" "alt" "Tesla — localisation et ouvrants")
           )) }}
           {{ partial "iphone-mockup.html" (dict "label" "Dashboard Roborock" "images" (slice
             (dict "src" "/img/smart-home/robot-1.webp" "alt" "Robot aspirateur — vue principale")
             (dict "src" "/img/smart-home/robot-2.webp" "alt" "Robot aspirateur — sélection de pièce")
-            (dict "src" "/img/smart-home/robot-3.webp" "alt" "Robot aspirateur — map interactive")
+            (dict "src" "/img/smart-home/robot-3.webp" "alt" "Robot aspirateur — carte interactive")
           )) }}
           {{ partial "iphone-mockup.html" (dict "label" "Dashboard Prusa" "images" (slice
             (dict "src" "/img/smart-home/prusa-1.webp" "alt" "Prusa — état d'impression")
@@ -279,7 +279,7 @@
           <h3>🧺 Maintenance &amp; linge</h3>
           <p>
             Lave-linge, sèche-linge, lave-vaisselle (LG ThinQ) :
-            cycle en cours, ETA, conso, notif fin de cycle.
+            cycle en cours, temps restant, conso, notif de fin de cycle.
           </p>
         </div>
         <div class="sh-tour__phones">
@@ -401,9 +401,9 @@
       {{ partial "iphone-mockup.html" (dict
         "label" "Page d'accueil pour les invités"
         "images" (slice
-          (dict "src" "/img/smart-home/welcome-wifi.webp" "alt" "Welcome — étape 1 : QR du Wi-Fi visiteurs")
-          (dict "src" "/img/smart-home/welcome-dashboard.webp" "alt" "Welcome — étape 2 : QR du dashboard maison")
-          (dict "src" "/img/smart-home/welcome-app.webp" "alt" "Welcome — étape 3 : QR optionnel de l'app HA Companion")
+          (dict "src" "/img/smart-home/welcome-wifi.webp" "alt" "Accueil — étape 1 : QR du Wi-Fi visiteurs")
+          (dict "src" "/img/smart-home/welcome-dashboard.webp" "alt" "Accueil — étape 2 : QR du tableau de bord maison")
+          (dict "src" "/img/smart-home/welcome-app.webp" "alt" "Accueil — étape 3 : QR optionnel de l'app HA Companion")
         )
       ) }}
     </div>
@@ -445,7 +445,7 @@
         </p>
         <ul>
           <li>Détection d'arrivée à la maison (Hue motion entrée) → réveil immédiat</li>
-          <li>Motion devant la TV (UniFi G4 person detection) → réveil si veille profonde</li>
+          <li>Mouvement devant la TV (détection de personne UniFi G4) → réveil si veille profonde</li>
           <li>Tout le monde absent &gt; 30&nbsp;min → coupure complète</li>
         </ul>
         <p>
