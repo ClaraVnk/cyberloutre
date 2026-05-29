@@ -1,0 +1,278 @@
+{{ define "main" }}
+
+<header class="sh-nav">
+  <div class="container sh-nav__inner">
+    <a href="/" class="sh-nav__back">← cyberloutre.fr</a>
+    <a href="/" class="sh-nav__brand">🦦 Loutre</a>
+  </div>
+</header>
+
+<!-- ========== HERO ========== -->
+<section class="sh-hero">
+  <div class="container sh-split" style="text-align: left;">
+    <div class="sh-split__text">
+      <p class="sh-hero__kicker">🐰 Case study · Reverse engineering</p>
+      <h1 class="sh-hero__title">Nabaztag Revival.</h1>
+      <p class="sh-hero__tagline" style="margin-left: 0;">
+        Un lapin Wi-Fi « intelligent » de 2005-2006, dont les serveurs ont fermé
+        vers 2011, ramené à la vie <strong>100 % en local</strong> — par reverse
+        engineering de son protocole proprio et l'écriture d'un serveur de
+        remplacement propre — puis transformé en assistant vocal complet
+        (bouton → reconnaissance vocale → Claude → réponse parlée),
+        <strong>sans toucher au firmware</strong> de l'appareil.
+      </p>
+      <span class="cs-now">Aujourd'hui : il se réveille, bouge, s'illumine, écoute, comprend le français, demande à Claude, et répond à voix haute.</span>
+    </div>
+    <div class="sh-split__visual">
+      <img src="/img/nabaztag.webp" alt="Un Nabaztag, lapin connecté de 2006" width="600" height="600" loading="eager" decoding="async" class="cs-hero-avatar">
+    </div>
+  </div>
+</section>
+
+<!-- ========== LE PROBLÈME ========== -->
+<section class="sh-section sh-section--soft">
+  <div class="container">
+    <p class="sh-section__kicker">🪦 Le problème</p>
+    <h2 class="sh-section__title">Matériel mort, cloud mort, et zéro mod autorisé.</h2>
+    <div class="sh-section__intro">
+      <p>
+        Le Nabaztag est un <strong>thin client</strong> : à chaque démarrage, il
+        télécharge son bytecode depuis un serveur et dialogue avec la plateforme
+        « Violet » via un protocole propriétaire (HTTP en clair + XMPP, sans TLS).
+        Violet a fermé vers 2011 — depuis, les lapins d'origine sont des
+        presse-papiers.
+      </p>
+      <p>
+        L'objectif : en réanimer un <strong>entièrement en local</strong>,
+        l'intégrer à un Home Assistant auto-hébergé pour qu'il réagisse à la
+        maison (arrivée, météo, rappels), et finir par lui parler — le tout
+        local-first, le seul cloud optionnel étant le LLM (un choix délibéré).
+      </p>
+      <p>
+        Contrainte que je me suis imposée : <strong>aucune modification
+        hardware</strong>. Le remplacement de carte façon « pynab », très
+        répandu, était explicitement hors sujet. On travaille avec l'appareil
+        d'origine, tel quel.
+      </p>
+    </div>
+  </div>
+</section>
+
+<!-- ========== L'APPROCHE ========== -->
+<section class="sh-section">
+  <div class="container">
+    <p class="sh-section__kicker">🛠️ L'approche</p>
+    <h2 class="sh-section__title">Comprendre le protocole, puis réécrire le serveur.</h2>
+    <div class="sh-section__intro">
+      <p>
+        Un seul serveur Python <strong>sans aucune dépendance</strong>
+        (bibliothèque standard uniquement), packagé en <strong>add-on Home
+        Assistant OS</strong> (Docker), qui :
+      </p>
+      <ul>
+        <li>Sert le bytecode du lapin en HTTP et le fichier « locate » qui le redirige vers la maison.</li>
+        <li>Implémente le côté serveur XMPP auquel le lapin se connecte, y compris le « success-bypass » SASL documenté (répondre <code>&lt;success/&gt;</code> pour court-circuiter l'auth morte du constructeur).</li>
+        <li>Pilote le lapin : bouge les oreilles à des positions précises, lance des jeux de lumière sur ses 5 LEDs, fait clignoter le nez, joue de l'audio, et parle (synthèse vocale).</li>
+        <li>Expose une petite API HTTP de contrôle pour que Home Assistant le pilote (rest_commands + automations, avec le phrasé laconique iconique du lapin — « Aujourd'hui… pluie ! »).</li>
+      </ul>
+      <p>
+        Puis la <strong>phase 2, la voix</strong> : maintenir le bouton sur la
+        tête enregistre le micro et envoie l'audio ; l'add-on le transcrit
+        (whisper.cpp embarqué), envoie le texte à un agent conversationnel
+        (Claude via l'intégration Anthropic de Home Assistant, ou l'agent Assist
+        local de HA — au choix), et reparle la réponse. L'agent peut même
+        <strong>piloter le lapin</strong> (bouger les oreilles, changer les LEDs,
+        clignoter du nez) en glissant des balises d'action dans sa réponse.
+      </p>
+    </div>
+  </div>
+</section>
+
+<!-- ========== LES DÉFIS ========== -->
+<section class="sh-section sh-section--soft">
+  <div class="container">
+    <p class="sh-section__kicker">🧩 Les défis (et comment je les ai résolus)</p>
+    <h2 class="sh-section__title">Là où ça devient intéressant.</h2>
+
+    <div class="sh-challenge">
+      <h3>🔌 « Le boot réussit, mais toutes les commandes sont ignorées »</h3>
+      <p>
+        Le plus beau bug. Après reverse engineering de la machine à états du
+        handshake XMPP, le lapin démarrait correctement… mais ignorait
+        silencieusement chaque commande poussée. En instrumentant l'état interne
+        de l'appareil (il a une commande XMPP cachée <code>getrunningstate</code>),
+        j'ai découvert que <strong>le serveur DOIT répondre au <code>&lt;presence&gt;</code>
+        du lapin</strong> pour qu'il atteigne l'état interne « free » où il agit
+        sur les commandes. Sans cette réponse : boot OK, mais lapin sourd.
+      </p>
+      <p>
+        Bonus piège : le <code>&lt;unbind&gt;</code> du lapin partage un espace de
+        noms XML avec <code>&lt;bind&gt;</code> — un handler naïf l'avalait et
+        désynchronisait tout le suivi d'état.
+      </p>
+    </div>
+
+    <blockquote class="sh-pullquote">
+      Le lapin bootait, respirait, et restait muet — jusqu'à ce que le serveur
+      réponde à son <code>&lt;presence&gt;</code>.
+    </blockquote>
+
+    <div class="sh-challenge">
+      <h3>🎙️ De la voix, sans aucun firmware custom</h3>
+      <p>
+        Plutôt que de flasher quoi que ce soit, j'ai découvert que le firmware
+        d'origine cachait déjà un <strong>push-to-talk</strong> : le bouton
+        enregistre le micro 8 kHz et envoie un WAV en IMA-ADPCM par HTTP POST.
+        J'ai écrit un <strong>décodeur IMA-ADPCM → PCM en Python pur</strong>,
+        rééchantillonné de 8 à 16 kHz, et lancé un modèle whisper.cpp embarqué
+        pour la transcription. Aucun bidouillage matériel, aucun firmware
+        remplacé.
+      </p>
+    </div>
+
+    <blockquote class="sh-pullquote">
+      Le push-to-talk était déjà là, planqué dans le bytecode d'usine. Il
+      suffisait de décoder ce que le lapin envoyait.
+    </blockquote>
+
+    <div class="sh-challenge">
+      <h3>🔐 Trois formats binaires, dont un chiffré</h3>
+      <p>
+        En lisant le bytecode (écrit en « Metal », le langage de VM de Violet) et
+        la réimplémentation C++ de référence, j'ai récupéré trois formats de
+        paquets : l'<code>AmbientPacket</code> (icônes ventre / oreilles / nez /
+        LED du bas), le <code>SleepPacket</code>, et les « programmes »
+        <code>MessagePacket</code> — ces derniers <strong>obfusqués par un
+        chiffrement à substitution roulante</strong> (table d'inversion). Je l'ai
+        ré-implémenté et vérifié qu'il fait un aller-retour parfait contre la
+        propre routine de dé-obfuscation de l'appareil.
+      </p>
+    </div>
+
+    <div class="sh-challenge">
+      <h3>🧱 Cross-compiler whisper.cpp pour Alpine/musl</h3>
+      <p>
+        L'add-on tourne sur Alpine (musl). J'ai cross-compilé whisper.cpp dans un
+        build Docker multi-stage (avec OpenMP), intégré espeak-ng pour une TTS
+        hors-ligne, et branché l'add-on Piper de Home Assistant (Wyoming) pour une
+        voix de meilleure qualité, récupérée via le proxy de l'API Supervisor.
+        Au passage, un bug retors : sous s6-overlay, le service n'héritait pas du
+        token de l'API Supervisor depuis l'environnement — il fallait le lire
+        depuis le fichier <em>container-environment</em> de s6.
+      </p>
+    </div>
+  </div>
+</section>
+
+<!-- ========== LE RÉSULTAT ========== -->
+<section class="sh-section">
+  <div class="container">
+    <p class="sh-section__kicker">✨ Le résultat</p>
+    <h2 class="sh-section__title">Un gadget de 20 ans qui écoute et répond.</h2>
+    <div class="sh-section__intro">
+      <p>
+        Un appareil discontinué depuis deux décennies qui, désormais : se réveille
+        sur un serveur auto-hébergé, respire, bouge, s'illumine, écoute, comprend
+        le français, demande à Claude, et répond d'une voix naturelle —
+        <strong>entièrement en local</strong>, reproductible en un clic sous forme
+        d'add-on Home Assistant. Le seul cloud, optionnel, c'est le LLM.
+      </p>
+      <p>
+        La boucle vocale complète — bouton → transcription → agent → réponse
+        parlée — tourne sur la vraie machine. Et l'agent peut animer le lapin
+        pendant qu'il parle : oreilles, LEDs, nez. Tout a été <strong>vérifié en
+        direct sur l'appareil physique</strong>.
+      </p>
+    </div>
+  </div>
+</section>
+
+<!-- ========== ROADMAP ========== -->
+<section class="sh-section sh-section--soft">
+  <div class="container">
+    <p class="sh-section__kicker">🗺️ À venir</p>
+    <h2 class="sh-section__title">Un serveur standalone, pour tous les lapins.</h2>
+    <div class="sh-section__intro">
+      <p>
+        La prochaine étape dépasse ma maison : un <strong>serveur tout propre,
+        indépendant de Home Assistant</strong>, où il suffira de faire pointer
+        n'importe quel Nabaztag dessus — directement depuis son écran de
+        configuration, au moment du setup initial. Au programme :
+      </p>
+      <ul class="sh-roadmap">
+        <li>Onboarding sans bidouille : on entre l'adresse du serveur dans la config d'origine du lapin, et c'est parti</li>
+        <li>Mises à jour de firmware servies par le serveur</li>
+        <li>Nouvelles features ajoutées côté serveur, sans toucher au matériel</li>
+        <li>Toujours local-first, toujours sans mod hardware</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- ========== STACK + REPO ========== -->
+<section class="sh-section">
+  <div class="container">
+    <p class="sh-section__kicker">🧱 Stack &amp; compétences</p>
+    <h2 class="sh-section__title">Ce que ce projet mobilise.</h2>
+    <ul class="sh-chips">
+      <li>Reverse engineering</li>
+      <li>Analyse de protocole binaire</li>
+      <li>Embarqué / IoT</li>
+      <li>Réseau (XMPP · HTTP · DNS)</li>
+      <li>Python (design stdlib-only)</li>
+      <li>C/C++ build (cross-compile musl)</li>
+      <li>Docker multi-stage</li>
+      <li>Add-on Home Assistant OS</li>
+      <li>Audio (IMA-ADPCM · resampling · STT/TTS)</li>
+      <li>Intégration LLM &amp; tool-use agentique</li>
+      <li>Debug méthodique</li>
+      <li>Local-first / privacy</li>
+    </ul>
+    <a href="https://github.com/ClaraVnk/nabaztag" target="_blank" rel="noopener noreferrer" class="sh-repo-btn">
+      Voir le code sur GitHub →
+    </a>
+  </div>
+</section>
+
+<!-- ========== FOOTER (repris de la landing) ========== -->
+<footer class="site-footer">
+  <div class="container container-prose">
+    <p>
+      🦦 © {{ now.Year }} Loutre · <a href="https://github.com/ClaraVnk/cyberloutre.fr" target="_blank" rel="noopener">Source sur GitHub</a> · Hébergé sur GitHub Pages
+    </p>
+    <p class="footer-tagline" aria-live="polite">
+      <span class="quote-text" id="quote-text" data-index="0"></span>
+      <span class="quote-author" id="quote-author"></span>
+    </p>
+    <script>
+    (function () {
+      var quotes = [
+        { q: "« C'est pas faux. »", a: "— Perceval" },
+        { q: "« On en a gros. »", a: "— Perceval" },
+        { q: "« Le gras, c'est la vie. »", a: "— Karadoc" },
+        { q: "« Faut pas prendre les enfants du bon Dieu pour des canards sauvages. »", a: "— Perceval" },
+        { q: "« Pour qu'un repas soit réussi, tout est dans le pain. »", a: "— Karadoc" },
+        { q: "« Y'a des baffes qui se perdent… »", a: "— Léodagan" }
+      ];
+      var qEl = document.getElementById('quote-text');
+      var aEl = document.getElementById('quote-author');
+      var i = Math.floor(Math.random() * quotes.length);
+      function show () {
+        qEl.style.opacity = '0';
+        aEl.style.opacity = '0';
+        setTimeout(function () {
+          qEl.textContent = quotes[i].q;
+          aEl.textContent = ' ' + quotes[i].a + ', Kaamelott';
+          qEl.style.opacity = '1';
+          aEl.style.opacity = '1';
+          i = (i + 1) % quotes.length;
+        }, 400);
+      }
+      show();
+      setInterval(show, 6000);
+    })();
+    </script>
+  </div>
+</footer>
+
+{{ end }}
