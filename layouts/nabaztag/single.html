@@ -94,72 +94,74 @@
     <p class="sh-section__kicker">🧩 Les défis (et comment je les ai résolus)</p>
     <h2 class="sh-section__title">Là où ça devient intéressant.</h2>
 
-    <div class="sh-challenge">
-      <h3>🔌 « Le boot réussit, mais toutes les commandes sont ignorées »</h3>
-      <p>
-        Le plus beau bug. Après reverse engineering de la machine à états du
-        handshake XMPP, le lapin démarrait correctement… mais ignorait
-        silencieusement chaque commande poussée. En instrumentant l'état interne
-        de l'appareil (il a une commande XMPP cachée <code>getrunningstate</code>),
-        j'ai découvert que <strong>le serveur DOIT répondre au <code>&lt;presence&gt;</code>
-        du lapin</strong> pour qu'il atteigne l'état interne « free » où il agit
-        sur les commandes. Sans cette réponse : boot OK, mais lapin sourd.
-      </p>
-      <p>
-        Bonus piège : le <code>&lt;unbind&gt;</code> du lapin partage un espace de
-        noms XML avec <code>&lt;bind&gt;</code> — un handler naïf l'avalait et
-        désynchronisait tout le suivi d'état.
-      </p>
-    </div>
+    <div class="sh-challenge-grid">
+      <div class="sh-challenge">
+        <h3>🔌 « Le boot réussit, mais toutes les commandes sont ignorées »</h3>
+        <p>
+          Le plus beau bug. Après reverse engineering de la machine à états du
+          handshake XMPP, le lapin démarrait correctement… mais ignorait
+          silencieusement chaque commande poussée. En instrumentant l'état interne
+          de l'appareil (il a une commande XMPP cachée <code>getrunningstate</code>),
+          j'ai découvert que <strong>le serveur DOIT répondre au <code>&lt;presence&gt;</code>
+          du lapin</strong> pour qu'il atteigne l'état interne « free » où il agit
+          sur les commandes. Sans cette réponse : boot OK, mais lapin sourd.
+        </p>
+        <p>
+          Bonus piège : le <code>&lt;unbind&gt;</code> du lapin partage un espace de
+          noms XML avec <code>&lt;bind&gt;</code> — un handler naïf l'avalait et
+          désynchronisait tout le suivi d'état.
+        </p>
+      </div>
 
-    <blockquote class="sh-pullquote">
-      Le lapin bootait, respirait, et restait muet — jusqu'à ce que le serveur
-      réponde à son <code>&lt;presence&gt;</code>.
-    </blockquote>
+      <div class="sh-challenge">
+        <h3>🎙️ De la voix, sans aucun firmware custom</h3>
+        <p>
+          Plutôt que de flasher quoi que ce soit, j'ai découvert que le firmware
+          d'origine cachait déjà un <strong>push-to-talk</strong> : le bouton
+          enregistre le micro 8 kHz et envoie un WAV en IMA-ADPCM par HTTP POST.
+          J'ai écrit un <strong>décodeur IMA-ADPCM → PCM en Python pur</strong>,
+          rééchantillonné de 8 à 16 kHz, et lancé un modèle whisper.cpp embarqué
+          pour la transcription. Aucun bidouillage matériel, aucun firmware
+          remplacé.
+        </p>
+      </div>
 
-    <div class="sh-challenge">
-      <h3>🎙️ De la voix, sans aucun firmware custom</h3>
-      <p>
-        Plutôt que de flasher quoi que ce soit, j'ai découvert que le firmware
-        d'origine cachait déjà un <strong>push-to-talk</strong> : le bouton
-        enregistre le micro 8 kHz et envoie un WAV en IMA-ADPCM par HTTP POST.
-        J'ai écrit un <strong>décodeur IMA-ADPCM → PCM en Python pur</strong>,
-        rééchantillonné de 8 à 16 kHz, et lancé un modèle whisper.cpp embarqué
-        pour la transcription. Aucun bidouillage matériel, aucun firmware
-        remplacé.
-      </p>
-    </div>
+      <blockquote class="sh-pullquote">
+        Le lapin bootait, respirait, et restait muet — jusqu'à ce que le serveur
+        réponde à son <code>&lt;presence&gt;</code>.
+      </blockquote>
 
-    <blockquote class="sh-pullquote">
-      Le push-to-talk était déjà là, planqué dans le bytecode d'usine. Il
-      suffisait de décoder ce que le lapin envoyait.
-    </blockquote>
+      <div class="sh-challenge">
+        <h3>🔐 Trois formats binaires, dont un chiffré</h3>
+        <p>
+          En lisant le bytecode (écrit en « Metal », le langage de VM de Violet) et
+          la réimplémentation C++ de référence, j'ai récupéré trois formats de
+          paquets : l'<code>AmbientPacket</code> (icônes ventre / oreilles / nez /
+          LED du bas), le <code>SleepPacket</code>, et les « programmes »
+          <code>MessagePacket</code> — ces derniers <strong>obfusqués par un
+          chiffrement à substitution roulante</strong> (table d'inversion). Je l'ai
+          ré-implémenté et vérifié qu'il fait un aller-retour parfait contre la
+          propre routine de dé-obfuscation de l'appareil.
+        </p>
+      </div>
 
-    <div class="sh-challenge">
-      <h3>🔐 Trois formats binaires, dont un chiffré</h3>
-      <p>
-        En lisant le bytecode (écrit en « Metal », le langage de VM de Violet) et
-        la réimplémentation C++ de référence, j'ai récupéré trois formats de
-        paquets : l'<code>AmbientPacket</code> (icônes ventre / oreilles / nez /
-        LED du bas), le <code>SleepPacket</code>, et les « programmes »
-        <code>MessagePacket</code> — ces derniers <strong>obfusqués par un
-        chiffrement à substitution roulante</strong> (table d'inversion). Je l'ai
-        ré-implémenté et vérifié qu'il fait un aller-retour parfait contre la
-        propre routine de dé-obfuscation de l'appareil.
-      </p>
-    </div>
+      <div class="sh-challenge">
+        <h3>🧱 Cross-compiler whisper.cpp pour Alpine/musl</h3>
+        <p>
+          L'add-on tourne sur Alpine (musl). J'ai cross-compilé whisper.cpp dans un
+          build Docker multi-stage (avec OpenMP), intégré espeak-ng pour une TTS
+          hors-ligne, et branché l'add-on Piper de Home Assistant (Wyoming) pour une
+          voix de meilleure qualité, récupérée via le proxy de l'API Supervisor.
+          Au passage, un bug retors : sous s6-overlay, le service n'héritait pas du
+          token de l'API Supervisor depuis l'environnement — il fallait le lire
+          depuis le fichier <em>container-environment</em> de s6.
+        </p>
+      </div>
 
-    <div class="sh-challenge">
-      <h3>🧱 Cross-compiler whisper.cpp pour Alpine/musl</h3>
-      <p>
-        L'add-on tourne sur Alpine (musl). J'ai cross-compilé whisper.cpp dans un
-        build Docker multi-stage (avec OpenMP), intégré espeak-ng pour une TTS
-        hors-ligne, et branché l'add-on Piper de Home Assistant (Wyoming) pour une
-        voix de meilleure qualité, récupérée via le proxy de l'API Supervisor.
-        Au passage, un bug retors : sous s6-overlay, le service n'héritait pas du
-        token de l'API Supervisor depuis l'environnement — il fallait le lire
-        depuis le fichier <em>container-environment</em> de s6.
-      </p>
+      <blockquote class="sh-pullquote">
+        Le push-to-talk était déjà là, planqué dans le bytecode d'usine. Il
+        suffisait de décoder ce que le lapin envoyait.
+      </blockquote>
     </div>
   </div>
 </section>
