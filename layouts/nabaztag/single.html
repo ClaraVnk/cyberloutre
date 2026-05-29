@@ -192,21 +192,80 @@
 <!-- ========== ROADMAP ========== -->
 <section class="sh-section sh-section--soft">
   <div class="container">
-    <p class="sh-section__kicker">🗺️ À venir</p>
-    <h2 class="sh-section__title">Un serveur standalone, pour tous les lapins.</h2>
+    <p class="sh-section__kicker">🗺️ La feuille de route</p>
+    <h2 class="sh-section__title">Ce qui arrive ensuite.</h2>
     <div class="sh-section__intro">
       <p>
-        La prochaine étape dépasse ma maison : un <strong>serveur tout propre,
-        indépendant de Home Assistant</strong>, où il suffira de faire pointer
-        n'importe quel Nabaztag dessus — directement depuis son écran de
-        configuration, au moment du setup initial. Au programme :
+        Les phases 1 à 2 — boot, pilotage complet, et la voix avec Claude — sont
+        <strong>faites et vérifiées sur l'appareil</strong> (c'est tout ce que tu
+        viens de lire). La suite :
       </p>
-      <ul class="sh-roadmap">
-        <li>Onboarding sans bidouille : on entre l'adresse du serveur dans la config d'origine du lapin, et c'est parti</li>
-        <li>Mises à jour de firmware servies par le serveur</li>
-        <li>Nouvelles features ajoutées côté serveur, sans toucher au matériel</li>
-        <li>Toujours local-first, toujours sans mod hardware</li>
-      </ul>
+    </div>
+
+    <div class="sh-challenge-grid">
+      <div class="sh-challenge">
+        <span class="sh-phase-tag sh-phase-tag--wip">Phase 3 · en cours</span>
+        <h3>🗣️ Wake word « Hey Nabi »</h3>
+        <p>
+          Le push-to-talk ne demande aucun firmware custom — mais l'écoute
+          mains-libres, si : le firmware d'origine n'enregistre le micro que sur
+          un appui physique du bouton, donc le serveur ne peut pas déclencher un
+          enregistrement seul. Bonne nouvelle, la <strong>toolchain Metal ouverte
+          compile désormais du bytecode de bout en bout</strong> (compilateur
+          <code>mtl_linux</code>, dans un conteneur Linux x86). Le plan : un
+          bytecode <strong>hybride</strong> — firmware Violet d'origine + flux micro
+          UDP déclenché par le serveur — qui alimente un moteur de wake word
+          (openWakeWord), lequel passe la phrase à la boucle STT → agent → voix déjà
+          en place.
+        </p>
+      </div>
+
+      <div class="sh-challenge">
+        <span class="sh-phase-tag">Phase 4 · prévu</span>
+        <h3>🛡️ Mises à jour de firmware</h3>
+        <p>
+          Avec la toolchain en place, durcir le firmware de 2006 — il parle du
+          <strong>HTTP en clair, sans TLS</strong> — et y ajouter des
+          améliorations.
+        </p>
+      </div>
+
+      <div class="sh-challenge">
+        <span class="sh-phase-tag">Phase 5 · prévu</span>
+        <h3>📶 Une expérience de setup soignée</h3>
+        <p>
+          Une page de configuration (captive portal) bien plus agréable quand on
+          rejoint le Wi-Fi du lapin pour l'appairer, au lieu de l'écran d'origine.
+        </p>
+      </div>
+
+      <div class="sh-challenge">
+        <span class="sh-phase-tag">Phase 6 · prévu</span>
+        <h3>🌍 Un serveur public, pour tous les lapins</h3>
+        <p>
+          Le serveur est du Python <strong>standalone, sans aucune dépendance</strong> —
+          il peut donc tourner sur un host public dédié, pas seulement en add-on
+          local. N'importe quel Nabaztag du monde pourrait s'y connecter et recevoir
+          des mises à jour : comme les lapins <strong>re-téléchargent leur bytecode à
+          chaque démarrage</strong>, pousser un nouveau bytecode met à jour toute la
+          flotte d'un coup. Reste à faire : un état multi-tenant par lapin et le
+          durcissement du protocole Violet.
+        </p>
+      </div>
+
+      <div class="sh-challenge sh-challenge--wide">
+        <span class="sh-phase-tag">Phase 7 · piste</span>
+        <h3>🐍 Réécrire la toolchain Metal en Python</h3>
+        <p>
+          Aujourd'hui, compiler du bytecode passe par <code>mtl_linux</code>, un
+          compilateur C qu'on fait tourner dans un conteneur. Réimplémenter le
+          langage <strong>Metal</strong> — son assembleur et son compilateur — en
+          <strong>Python pur</strong> rendrait l'ensemble bien plus maintenable,
+          hackable et accessible à la communauté : tout le projet tiendrait alors
+          dans un seul langage, sans dépendance, fidèle à l'esprit
+          <em>stdlib-only</em>.
+        </p>
+      </div>
     </div>
   </div>
 </section>
