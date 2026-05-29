@@ -349,16 +349,34 @@
       </div>
 
       <div class="sh-challenge">
-        <span class="sh-phase-tag">Phase 7 · piste</span>
-        <h3>🐍 Réécrire la toolchain Metal en Python</h3>
+        <span class="sh-phase-tag">Phase 7 · prévu</span>
+        <h3>🐍 Un transpileur Metal → Python (et retour)</h3>
         <p>
-          Aujourd'hui, compiler du bytecode passe par <code>mtl_linux</code>, un
-          compilateur C qu'on fait tourner dans un conteneur. Réimplémenter le
-          langage <strong>Metal</strong> — son assembleur et son compilateur — en
-          <strong>Python pur</strong> rendrait l'ensemble bien plus maintenable,
-          hackable et accessible à la communauté : tout le projet tiendrait alors
-          dans un seul langage, sans dépendance, fidèle à l'esprit
-          <em>stdlib-only</em>.
+          Le langage <strong>Metal (MTL)</strong> est le DSL maison de 2006 dans
+          lequel est écrit le bootcode du lapin. Aujourd'hui, qui veut toucher au
+          comportement du lapin doit apprendre une langue morte obscure et entretenir
+          un vieux compilateur C++. Un <strong>transpileur fidèle MTL → Python</strong> —
+          et la passerelle inverse Python → MTL en porte de sortie — permettrait à la
+          communauté de lire, forker et publier du bytecode dans un langage mainstream.
+          La grammaire est petite (documentée), la plupart des builtins aussi : c'est
+          du travail mécanique, pas de la recherche.
+        </p>
+      </div>
+
+      <div class="sh-challenge sh-challenge--wide">
+        <span class="sh-phase-tag">Phase 8 · piste</span>
+        <h3>🪓 Réduire le firmware en passant du Metal au C</h3>
+        <p>
+          Le bootloader du lapin, c'est ~3000 lignes de bytecode Metal
+          (<code>mtl/boot/boot.0.0.0.13.mtl</code>) qui tournent sur une mini VM à
+          pile. Le code <strong>ARM natif est environ 3× plus dense</strong> que le
+          bytecode Metal : réécrire les chemins chauds (serveur HTTP, parsing du
+          <em>locate</em>, amorçage audio) en C — et retirer les opcodes VM
+          correspondants — libérerait <strong>10 à 20 Ko de ROM</strong> et de la
+          place pour des features plus riches. Le compromis : le Metal est petit,
+          lisible et modifiable <em>sans tout reflasher</em> ; le C est plus dense mais
+          chaque changement impose un reflash complet. Le jeu en vaut la chandelle
+          pour des chemins de code stables et bien maîtrisés.
         </p>
       </div>
     </div>
