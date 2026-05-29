@@ -189,6 +189,117 @@
   </div>
 </section>
 
+<!-- ========== DEEP DIVE : FIRMWARE MAISON ========== -->
+<section class="sh-section sh-section--soft" id="firmware">
+  <div class="container">
+    <p class="sh-section__kicker">🔬 Plongée technique · Phase 3</p>
+    <h2 class="sh-section__title">Un firmware maison pour écouter sans les mains.</h2>
+    <div class="sh-section__intro">
+      <p>
+        Après avoir réanimé le lapin puis lui avoir donné la parole, il restait une
+        dernière frontière : l'écoute <strong>mains-libres</strong> — dire « Nabi »
+        et qu'il réponde, sans toucher à rien. Le hic : le firmware d'origine
+        n'enregistre le micro que sur un <strong>appui physique du bouton</strong>.
+        Le serveur ne peut donc pas déclencher un enregistrement tout seul.
+      </p>
+      <p>
+        Jusqu'ici, tout avait été fait <em>sans le moindre firmware custom</em>. Pour
+        les mains-libres, il en fallait un : j'ai écrit un firmware maison qui
+        <strong>diffuse le micro en continu</strong>, en reverse-engineerant puis en
+        recompilant le propre bytecode de l'appareil — et fait tourner par-dessus une
+        chaîne vocale 100 % locale (reconnaissance → LLM → synthèse). Toujours
+        <strong>aucune modification matérielle</strong> : le firmware est livré au
+        démarrage, rien n'est flashé en dur.
+      </p>
+    </div>
+
+    <div class="sh-challenge-grid">
+      <div class="sh-challenge">
+        <h3>🧰 Remonter la toolchain « Metal » depuis les sources</h3>
+        <p>
+          Pour produire du bytecode, il faut d'abord le compilateur. J'ai remonté la
+          toolchain Metal depuis ses sources : <strong>cross-compilation d'un
+          compilateur C++ 32 bits</strong> dans un conteneur Linux (le build n'aboutit
+          que sur x86, avec le multilib 32 bits). Preuve que la chaîne est correcte —
+          j'ai <strong>recompilé le firmware d'origine depuis les sources, identique
+          octet pour octet</strong> à celui d'usine.
+        </p>
+      </div>
+
+      <div class="sh-challenge">
+        <h3>🔎 Reverse du dispatch, de la pile réseau et du chemin d'enregistrement</h3>
+        <p>
+          En reverse-engineerant le dispatch de commandes, la pile réseau et le chemin
+          d'enregistrement, j'ai isolé exactement <strong>pourquoi le serveur ne
+          pouvait pas capter d'audio</strong> : le micro est verrouillé derrière le
+          bouton. J'ai alors écrit un petit module firmware qui ajoute <strong>deux
+          commandes pilotées par le serveur</strong> et diffuse l'audio 8 kHz en
+          <strong>datagrammes UDP</strong>.
+        </p>
+      </div>
+
+      <div class="sh-challenge">
+        <h3>🌐 Des problèmes systèmes, sur un appareil de 20 ans</h3>
+        <p>
+          <strong>Routage inter-sous-réseaux</strong> : l'ARP du firmware résout déjà
+          la passerelle pour les IP non locales, donc le flux traverse les VLAN sans
+          bidouille. Et une contrainte <strong>half-duplex</strong> bien réelle —
+          l'appareil ne peut pas enregistrer et jouer en même temps : le serveur coupe
+          le micro avant de parler, puis le réarme ensuite.
+        </p>
+      </div>
+
+      <div class="sh-challenge">
+        <h3>🎧 La boucle vocale, côté serveur</h3>
+        <p>
+          Décoder le flux <strong>IMA-ADPCM</strong> du lapin en PCM, faire tourner un
+          modèle de reconnaissance vocale local sur des <strong>fenêtres
+          glissantes</strong>, détecter le mot d'éveil, envoyer la commande à un agent
+          conversationnel (LLM), puis reparler la réponse d'une voix naturelle locale —
+          l'agent pouvant même <strong>bouger les oreilles et les LED</strong> dans sa
+          réponse.
+        </p>
+      </div>
+
+      <blockquote class="sh-pullquote">
+        « Nabi, raconte-moi une blague » — et le lapin a transcrit la phrase,
+        interrogé le LLM, puis raconté la blague à voix haute. Mains-libres, sur la
+        vraie machine.
+      </blockquote>
+    </div>
+
+    <div class="sh-section__intro" style="margin-top: 1.75rem;">
+      <p>
+        Bilan : un gadget arrêté depuis 2006 fait désormais tourner un firmware maison
+        qui diffuse son micro, écoute son nom, comprend le français, interroge un LLM
+        et répond à voix haute — <strong>entièrement sur le réseau local</strong>, le
+        LLM étant le seul composant cloud, et optionnel. (Sa toute première blague
+        mains-libres : « pourquoi la tomate a-t-elle traversé la route ? Pour prouver
+        qu'elle n'était pas une banane. »)
+      </p>
+      <p>
+        Honnêteté de rigueur : c'est une <strong>preuve de concept qui fonctionne</strong>,
+        pas un produit fini. L'écoute permanente est <strong>optionnelle et gourmande
+        en CPU</strong> — on l'active quand on en a envie.
+      </p>
+    </div>
+
+    <p class="sh-subhead">Ce que cette phase a mobilisé</p>
+    <ul class="sh-chips">
+      <li>Reverse de firmware embarqué</li>
+      <li>Bring-up de toolchain / compilateur</li>
+      <li>Cross-compile C++ (32 bits · multilib)</li>
+      <li>Analyse de bytecode / VM</li>
+      <li>Réseau bas niveau (UDP · ARP · inter-VLAN)</li>
+      <li>Audio half-duplex</li>
+      <li>IMA-ADPCM · resampling · STT/TTS</li>
+      <li>Wake word + pipeline vocal local</li>
+      <li>Tool-use LLM</li>
+      <li>Debug sur matériel contraint</li>
+    </ul>
+  </div>
+</section>
+
 <!-- ========== ROADMAP ========== -->
 <section class="sh-section sh-section--soft">
   <div class="container">
@@ -196,30 +307,14 @@
     <h2 class="sh-section__title">Ce qui arrive ensuite.</h2>
     <div class="sh-section__intro">
       <p>
-        Les phases 1 à 2 — boot, pilotage complet, et la voix avec Claude — sont
-        <strong>faites et vérifiées sur l'appareil</strong> (c'est tout ce que tu
-        viens de lire). La suite :
+        Les phases 1 à 3 — boot, pilotage complet, la voix avec Claude, et désormais
+        l'écoute mains-libres en firmware maison — sont <strong>faites et vérifiées
+        sur l'appareil</strong> (la phase 3 en preuve de concept, détaillée juste
+        au-dessus). La suite :
       </p>
     </div>
 
     <div class="sh-challenge-grid">
-      <div class="sh-challenge">
-        <span class="sh-phase-tag sh-phase-tag--wip">Phase 3 · en cours</span>
-        <h3>🗣️ Wake word « Hey Nabi »</h3>
-        <p>
-          Le push-to-talk ne demande aucun firmware custom — mais l'écoute
-          mains-libres, si : le firmware d'origine n'enregistre le micro que sur
-          un appui physique du bouton, donc le serveur ne peut pas déclencher un
-          enregistrement seul. Bonne nouvelle, la <strong>toolchain Metal ouverte
-          compile désormais du bytecode de bout en bout</strong> (compilateur
-          <code>mtl_linux</code>, dans un conteneur Linux x86). Le plan : un
-          bytecode <strong>hybride</strong> — firmware Violet d'origine + flux micro
-          UDP déclenché par le serveur — qui alimente un moteur de wake word
-          (openWakeWord), lequel passe la phrase à la boucle STT → agent → voix déjà
-          en place.
-        </p>
-      </div>
-
       <div class="sh-challenge">
         <span class="sh-phase-tag">Phase 4 · prévu</span>
         <h3>🛡️ Mises à jour de firmware</h3>
@@ -253,7 +348,7 @@
         </p>
       </div>
 
-      <div class="sh-challenge sh-challenge--wide">
+      <div class="sh-challenge">
         <span class="sh-phase-tag">Phase 7 · piste</span>
         <h3>🐍 Réécrire la toolchain Metal en Python</h3>
         <p>
@@ -282,6 +377,8 @@
       <li>Réseau (XMPP · HTTP · DNS)</li>
       <li>Python (design stdlib-only)</li>
       <li>C/C++ build (cross-compile musl)</li>
+      <li>Firmware embarqué custom</li>
+      <li>Bring-up de toolchain / bytecode (Metal)</li>
       <li>Docker multi-stage</li>
       <li>Add-on Home Assistant OS</li>
       <li>Audio (IMA-ADPCM · resampling · STT/TTS)</li>
