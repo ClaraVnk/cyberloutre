@@ -14,14 +14,13 @@
       <p class="sh-hero__kicker">🐰 Case study · Reverse engineering</p>
       <h1 class="sh-hero__title">Nabaztag Revival.</h1>
       <p class="sh-hero__tagline" style="margin-left: 0;">
-        Un lapin Wi-Fi « intelligent » de 2005-2006, dont les serveurs ont fermé
-        vers 2011, ramené à la vie <strong>100 % en local</strong> — par reverse
-        engineering de son protocole proprio et l'écriture d'un serveur de
-        remplacement propre — puis transformé en assistant vocal complet
-        (bouton → reconnaissance vocale → Claude → réponse parlée),
-        <strong>sans toucher au firmware</strong> de l'appareil.
+        Un lapin connecté des années 2000, débranché de force en 2011 quand la
+        société qui le faisait vivre a fermé. Je l'ai <strong>ramené à la vie chez
+        moi</strong>, sans aucun service cloud, et je lui ai appris à
+        <strong>dialoguer avec une IA</strong> — tout ça sans changer la moindre
+        pièce dans l'objet.
       </p>
-      <span class="cs-now">Aujourd'hui : il se réveille, bouge, s'illumine, écoute, comprend le français, demande à Claude, et répond à voix haute.</span>
+      <span class="cs-now">Aujourd'hui : il se réveille, bouge, s'illumine, écoute, comprend le français et me répond à voix haute.</span>
     </div>
     <div class="sh-split__visual">
       <img src="/img/nabaztag.webp" alt="Un Nabaztag, lapin connecté de 2006" width="600" height="600" loading="eager" decoding="async" class="cs-hero-avatar">
@@ -33,26 +32,30 @@
 <section class="sh-section sh-section--soft">
   <div class="container">
     <p class="sh-section__kicker">🪦 Le problème</p>
-    <h2 class="sh-section__title">Matériel mort, cloud mort, et zéro mod autorisé.</h2>
+    <h2 class="sh-section__title">Un objet qui n'a plus de maison.</h2>
     <div class="sh-section__intro">
       <p>
-        Le Nabaztag est un <strong>thin client</strong> : à chaque démarrage, il
-        télécharge son bytecode depuis un serveur et dialogue avec la plateforme
-        « Violet » via un protocole propriétaire (HTTP en clair + XMPP, sans TLS).
-        Violet a fermé vers 2011 — depuis, les lapins d'origine sont des
-        presse-papiers.
+        Le Nabaztag a été conçu comme un objet <em>connecté</em> avant l'heure :
+        toute son « intelligence » vit dans un serveur quelque part sur Internet,
+        pas dans le lapin lui-même. À chaque démarrage, il appelle ce serveur, qui
+        lui dit quoi faire. Sans lui, le lapin allume une LED et s'arrête.
       </p>
       <p>
-        L'objectif : en réanimer un <strong>entièrement en local</strong>,
-        l'intégrer à un Home Assistant auto-hébergé pour qu'il réagisse à la
-        maison (arrivée, météo, rappels), et finir par lui parler — le tout
-        local-first, le seul cloud optionnel étant le LLM (un choix délibéré).
+        La société qui faisait tourner ce service — Violet — a mis la clé sous la
+        porte vers 2011. Depuis, des milliers de lapins servent de presse-papiers
+        ou dorment dans des cartons.
       </p>
       <p>
-        Contrainte que je me suis imposée : <strong>aucune modification
-        hardware</strong>. Le remplacement de carte façon « pynab », très
-        répandu, était explicitement hors sujet. On travaille avec l'appareil
-        d'origine, tel quel.
+        Mon objectif : en <strong>réanimer un chez moi</strong>, sans dépendre
+        d'aucun service extérieur, et l'intégrer à mon installation domotique pour
+        qu'il réagisse à la vie de la maison (quelqu'un arrive, la météo change,
+        un rappel). Puis, plus tard, lui apprendre à m'écouter et à me répondre.
+      </p>
+      <p>
+        Une règle que je me suis imposée : <strong>ne pas toucher au
+        matériel</strong>. La méthode populaire pour faire revivre un Nabaztag
+        consiste à remplacer sa carte interne par un Raspberry Pi — trop facile,
+        et ce n'est plus le même objet. On garde l'original, tel quel.
       </p>
     </div>
   </div>
@@ -62,27 +65,32 @@
 <section class="sh-section">
   <div class="container">
     <p class="sh-section__kicker">🛠️ L'approche</p>
-    <h2 class="sh-section__title">Comprendre le protocole, puis réécrire le serveur.</h2>
+    <h2 class="sh-section__title">Lui construire un remplaçant qui parle sa langue.</h2>
     <div class="sh-section__intro">
       <p>
-        Un seul serveur Python <strong>sans aucune dépendance</strong>
-        (bibliothèque standard uniquement), packagé en <strong>add-on Home
-        Assistant OS</strong> (Docker), qui :
+        Mon idée : écrire <strong>un petit serveur de remplacement</strong>, qui
+        parle exactement la même langue que les serveurs disparus, et le faire
+        tourner chez moi. Le lapin croit appeler Violet en 2008 ; en réalité, il
+        discute avec mon logiciel sur le réseau local de la maison.
       </p>
+      <p>Concrètement, ce serveur fait quatre choses :</p>
       <ul>
-        <li>Sert le bytecode du lapin en HTTP et le fichier « locate » qui le redirige vers la maison.</li>
-        <li>Implémente le côté serveur XMPP auquel le lapin se connecte, y compris le « success-bypass » SASL documenté (répondre <code>&lt;success/&gt;</code> pour court-circuiter l'auth morte du constructeur).</li>
-        <li>Pilote le lapin : bouge les oreilles à des positions précises, lance des jeux de lumière sur ses 5 LEDs, fait clignoter le nez, joue de l'audio, et parle (synthèse vocale).</li>
-        <li>Expose une petite API HTTP de contrôle pour que Home Assistant le pilote (rest_commands + automations, avec le phrasé laconique iconique du lapin — « Aujourd'hui… pluie ! »).</li>
+        <li><strong>Il imite Violet.</strong> Quand le lapin appelle au démarrage, il accepte la conversation et lui envoie le « cerveau » dont il a besoin pour fonctionner, comme le faisait l'original.</li>
+        <li><strong>Il pilote le lapin.</strong> Il bouge les oreilles à des positions précises, déclenche des jeux de lumière sur ses 5 LEDs, allume le nez, joue des sons et parle (synthèse vocale).</li>
+        <li><strong>Il s'intègre à la maison connectée.</strong> Une petite interface permet à mon système domotique (Home Assistant) de demander au lapin de réagir — « annonce qu'il pleut », « clignote en bleu si Raphaël dort ».</li>
+        <li><strong>Il garde le ton du lapin.</strong> Phrasé laconique d'origine — « Aujourd'hui… pluie ! » — c'est important.</li>
       </ul>
       <p>
-        Puis la <strong>phase 2, la voix</strong> : maintenir le bouton sur la
-        tête enregistre le micro et envoie l'audio ; l'add-on le transcrit
-        (whisper.cpp embarqué), envoie le texte à un agent conversationnel
-        (Claude via l'intégration Anthropic de Home Assistant, ou l'agent Assist
-        local de HA — au choix), et reparle la réponse. L'agent peut même
-        <strong>piloter le lapin</strong> (bouger les oreilles, changer les LEDs,
-        clignoter du nez) en glissant des balises d'action dans sa réponse.
+        <strong>Phase 2 : la voix.</strong> Quand je maintiens le bouton sur la
+        tête du lapin, il enregistre ce que je dis et envoie l'audio au serveur.
+        Mon serveur le transcrit, le passe à une IA (Claude), et fait reparler le
+        lapin avec la réponse. L'IA peut même animer le lapin pendant qu'elle
+        parle — oreilles, LEDs, nez — en glissant des instructions dans son texte.
+      </p>
+      <p class="sh-section__intro" style="color: var(--sh-text-soft); font-style: italic; font-size: 0.9375rem; margin: 1.25rem 0 0;">
+        Pour les ingés : c'est un serveur Python <em>sans aucune dépendance</em>
+        (bibliothèque standard uniquement), packagé en add-on Home Assistant OS
+        (Docker). Le détail du protocole est dans la section suivante.
       </p>
     </div>
   </div>
@@ -93,6 +101,10 @@
   <div class="container">
     <p class="sh-section__kicker">🧩 Les défis (et comment je les ai résolus)</p>
     <h2 class="sh-section__title">Là où ça devient intéressant.</h2>
+    <p style="color: var(--sh-text-soft); font-style: italic; max-width: 60ch; margin: 0 0 1.5rem;">
+      Section pour les ingés et les curieux de mécanique. Si la technique te parle
+      pas, scrolle direct jusqu'au résultat ↓, promis je ne le prends pas mal.
+    </p>
 
     <div class="sh-challenge-grid">
       <div class="sh-challenge">
@@ -170,20 +182,22 @@
 <section class="sh-section">
   <div class="container">
     <p class="sh-section__kicker">✨ Le résultat</p>
-    <h2 class="sh-section__title">Un gadget de 20 ans qui écoute et répond.</h2>
+    <h2 class="sh-section__title">Un objet de 20 ans qui écoute et répond.</h2>
     <div class="sh-section__intro">
       <p>
-        Un appareil discontinué depuis deux décennies qui, désormais : se réveille
-        sur un serveur auto-hébergé, respire, bouge, s'illumine, écoute, comprend
-        le français, demande à Claude, et répond d'une voix naturelle —
-        <strong>entièrement en local</strong>, reproductible en un clic sous forme
-        d'add-on Home Assistant. Le seul cloud, optionnel, c'est le LLM.
+        Un appareil arrêté depuis deux décennies qui, désormais : se réveille,
+        respire, bouge, s'illumine, écoute, comprend le français, demande à une IA
+        et me répond d'une voix naturelle. Tout ça <strong>entièrement chez
+        moi</strong>, sur le réseau local de la maison — le seul morceau de cloud,
+        optionnel, c'est l'IA elle-même (et encore, on peut la remplacer par une
+        IA locale).
       </p>
       <p>
-        La boucle vocale complète — bouton → transcription → agent → réponse
-        parlée — tourne sur la vraie machine. Et l'agent peut animer le lapin
-        pendant qu'il parle : oreilles, LEDs, nez. Tout a été <strong>vérifié en
-        direct sur l'appareil physique</strong>.
+        La boucle complète — j'appuie sur le bouton, je parle, le lapin transcrit,
+        l'IA répond, le lapin parle — tourne sur la vraie machine. L'IA peut même
+        animer le lapin pendant qu'elle parle : oreilles, LEDs, nez. Tout a été
+        <strong>vérifié en direct sur l'appareil physique</strong>, pas dans un
+        simulateur.
       </p>
     </div>
   </div>
@@ -194,13 +208,18 @@
   <div class="container">
     <p class="sh-section__kicker">🔬 Plongée technique · Phase 3</p>
     <h2 class="sh-section__title">Un firmware maison pour écouter sans les mains.</h2>
+    <p style="color: var(--sh-text-soft); font-style: italic; max-width: 60ch; margin: 0 0 1.5rem;">
+      Section très technique — pour les ingés et les makers. Si tu lis pour
+      l'histoire, file directement à la feuille de route ↓.
+    </p>
     <div class="sh-section__intro">
       <p>
         Après avoir réanimé le lapin puis lui avoir donné la parole, il restait une
         dernière frontière : l'écoute <strong>mains-libres</strong> — dire « Nabi »
-        et qu'il réponde, sans toucher à rien. Le hic : le firmware d'origine
-        n'enregistre le micro que sur un <strong>appui physique du bouton</strong>.
-        Le serveur ne peut donc pas déclencher un enregistrement tout seul.
+        et qu'il réponde, sans rien toucher. Le hic : le programme interne du lapin
+        n'enregistre le micro que quand on <strong>appuie physiquement sur le
+        bouton</strong>. Le serveur ne peut pas déclencher un enregistrement tout
+        seul.
       </p>
       <p>
         Jusqu'ici, tout avait été fait <em>sans le moindre firmware custom</em>. Pour
@@ -307,76 +326,72 @@
     <h2 class="sh-section__title">Ce qui arrive ensuite.</h2>
     <div class="sh-section__intro">
       <p>
-        Les phases 1 à 3 — boot, pilotage complet, la voix avec Claude, et désormais
-        l'écoute mains-libres en firmware maison — sont <strong>faites et vérifiées
-        sur l'appareil</strong> (la phase 3 en preuve de concept, détaillée juste
-        au-dessus). La suite :
+        Les phases 1 à 3 — réveiller le lapin, le piloter, lui donner la parole avec
+        une IA, puis lui apprendre à écouter sans les mains — sont
+        <strong>faites et vérifiées</strong> sur l'appareil (la phase 3 en preuve de
+        concept). Ce qui suit, c'est ce que j'aimerais ajouter ensuite :
       </p>
     </div>
 
     <div class="sh-challenge-grid">
       <div class="sh-challenge">
         <span class="sh-phase-tag">Phase 4 · prévu</span>
-        <h3>🛡️ Mises à jour de firmware</h3>
+        <h3>🛡️ Renforcer la sécurité du logiciel interne</h3>
         <p>
-          Avec la toolchain en place, durcir le firmware de 2006 — il parle du
-          <strong>HTTP en clair, sans TLS</strong> — et y ajouter des
+          Le programme interne du lapin date de 2006 : il communique en clair, sans
+          chiffrement (les pratiques de sécurité de l'époque). Avec les outils
+          maintenant en place, je peux le moderniser et y ajouter quelques
           améliorations.
         </p>
       </div>
 
       <div class="sh-challenge">
         <span class="sh-phase-tag">Phase 5 · prévu</span>
-        <h3>📶 Une expérience de setup soignée</h3>
+        <h3>📶 Une mise en route plus agréable</h3>
         <p>
-          Une page de configuration (captive portal) bien plus agréable quand on
-          rejoint le Wi-Fi du lapin pour l'appairer, au lieu de l'écran d'origine.
+          Une procédure d'installation soignée quand on configure un lapin pour la
+          première fois, à la place de l'écran un peu rude d'origine.
         </p>
       </div>
 
       <div class="sh-challenge">
         <span class="sh-phase-tag">Phase 6 · prévu</span>
-        <h3>🌍 Un serveur public, pour tous les lapins</h3>
+        <h3>🌍 Un serveur public, pour tous les lapins du monde</h3>
         <p>
-          Le serveur est du Python <strong>standalone, sans aucune dépendance</strong> —
-          il peut donc tourner sur un host public dédié, pas seulement en add-on
-          local. N'importe quel Nabaztag du monde pourrait s'y connecter et recevoir
-          des mises à jour : comme les lapins <strong>re-téléchargent leur bytecode à
-          chaque démarrage</strong>, pousser un nouveau bytecode met à jour toute la
-          flotte d'un coup. Reste à faire : un état multi-tenant par lapin et le
-          durcissement du protocole Violet.
+          Mon serveur est petit et autonome — il peut donc tourner sur un hébergement
+          public, pas seulement chez moi. N'importe quel Nabaztag dans le monde
+          pourrait s'y connecter et recevoir des mises à jour. Comme les lapins
+          re-téléchargent leur cerveau à chaque démarrage, pousser une nouveauté met
+          à jour toute la flotte d'un coup.
         </p>
       </div>
 
       <div class="sh-challenge">
         <span class="sh-phase-tag">Phase 7 · prévu</span>
-        <h3>🐍 Un transpileur Metal → Python (et retour)</h3>
+        <h3>🐍 Traduire automatiquement le « cerveau » du lapin en Python</h3>
         <p>
-          Le langage <strong>Metal (MTL)</strong> est le DSL maison de 2006 dans
-          lequel est écrit le bootcode du lapin. Aujourd'hui, qui veut toucher au
-          comportement du lapin doit apprendre une langue morte obscure et entretenir
-          un vieux compilateur C++. Un <strong>transpileur fidèle MTL → Python</strong> —
-          et la passerelle inverse Python → MTL en porte de sortie — permettrait à la
-          communauté de lire, forker et publier du bytecode dans un langage mainstream.
-          La grammaire est petite (documentée), la plupart des builtins aussi : c'est
-          du travail mécanique, pas de la recherche.
+          Le cerveau du lapin est écrit dans un langage maison de 2006 obscur et
+          oublié (« Metal »). Aujourd'hui, pour le modifier, il faut apprendre cette
+          langue morte et entretenir un vieux compilateur. Le traduire
+          automatiquement en <strong>Python</strong> — un langage que tout le monde
+          sait lire — ouvrirait la porte à des contributions de la communauté. C'est
+          du travail mécanique, pas de la recherche : la grammaire est petite et
+          documentée.
         </p>
       </div>
 
       <div class="sh-challenge sh-challenge--wide">
         <span class="sh-phase-tag">Phase 8 · piste</span>
-        <h3>🪓 Réduire le firmware en passant du Metal au C</h3>
+        <h3>🪓 Alléger le cerveau en passant à un langage natif</h3>
         <p>
-          Le bootloader du lapin, c'est ~3000 lignes de bytecode Metal
-          (<code>mtl/boot/boot.0.0.0.13.mtl</code>) qui tournent sur une mini VM à
-          pile. Le code <strong>ARM natif est environ 3× plus dense</strong> que le
-          bytecode Metal : réécrire les chemins chauds (serveur HTTP, parsing du
-          <em>locate</em>, amorçage audio) en C — et retirer les opcodes VM
-          correspondants — libérerait <strong>10 à 20 Ko de ROM</strong> et de la
-          place pour des features plus riches. Le compromis : le Metal est petit,
-          lisible et modifiable <em>sans tout reflasher</em> ; le C est plus dense mais
-          chaque changement impose un reflash complet. Le jeu en vaut la chandelle
-          pour des chemins de code stables et bien maîtrisés.
+          Le cerveau du lapin tient en environ 3000 lignes du langage Metal, qui
+          tournent sur une petite machine virtuelle. Le langage natif de la puce
+          (« C ») est environ 3× plus compact : réécrire les morceaux les plus
+          utilisés directement en C libérerait <strong>10 à 20 Ko de mémoire</strong>
+          pour de nouvelles fonctions. Le compromis : Metal est petit, lisible, et
+          modifiable sans tout reflasher ; le C est plus dense mais chaque
+          modification exige un reflash complet. Le jeu en vaut la chandelle pour des
+          parties stables et bien comprises du logiciel.
         </p>
       </div>
     </div>
