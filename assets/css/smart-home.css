@@ -953,6 +953,56 @@
     line-height: 1.4;
 }
 
+/* Badge "Live" — lien vers le serveur public, avec point qui pulse */
+.cs-live {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    width: fit-content;
+    margin-top: 0.75rem;
+    padding: 0.5rem 0.875rem;
+    border-radius: 999px;
+    border: 1px solid var(--sh-border);
+    background: var(--sh-bg);
+    font-family: var(--sh-mono);
+    font-size: 0.8125rem;
+    color: var(--sh-text);
+    text-decoration: none;
+    transition: transform .15s, box-shadow .15s, border-color .15s;
+}
+.cs-live:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 8px 20px -10px rgba(0, 0, 0, 0.4);
+    border-color: var(--sh-accent);
+}
+.cs-live__dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--sh-accent);
+    box-shadow: 0 0 0 0 var(--sh-accent);
+    animation: cs-live-pulse 1.8s ease-out infinite;
+    flex-shrink: 0;
+}
+@keyframes cs-live-pulse {
+    0%   { box-shadow: 0 0 0 0 var(--sh-accent-soft); }
+    70%  { box-shadow: 0 0 0 8px transparent; }
+    100% { box-shadow: 0 0 0 0 transparent; }
+}
+.cs-live__label {
+    color: var(--sh-text-soft);
+    font-size: 0.6875rem;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+}
+.cs-live__url {
+    color: var(--sh-accent);
+    font-weight: 600;
+}
+@media (prefers-reduced-motion: reduce) {
+    .cs-live__dot { animation: none; }
+}
+
 /* Pull-quote pour les moments "aha" */
 .sh-pullquote {
     border-left: 3px solid var(--sh-accent);
